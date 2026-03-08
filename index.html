@@ -1,0 +1,2450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<<<<<<< HEAD
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vinculum Logic Engine V6.7</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Inter:wght@400;900&display=swap');
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #020203;
+            --math: #fde047;
+            --accent: #bc13fe;
+            --secondary: #fb923c;
+            --fire: #ff3300;
+            --panel: rgba(8, 8, 12, 0.98);
+        }
+
+        body {
+            background: var(--bg);
+            color: #f1f5f9;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            user-select: none;
+            touch-action: none;
+        }
+
+        .flex          { display: flex; }
+        .flex-col      { flex-direction: column; }
+        .flex-1        { flex: 1 1 0%; }
+        .h-screen      { height: 100vh; }
+        .h-full        { height: 100%; }
+        .w-full        { width: 100%; }
+        .relative      { position: relative; }
+        .absolute      { position: absolute; }
+        .inset-0       { top: 0; right: 0; bottom: 0; left: 0; }
+        .overflow-hidden   { overflow: hidden; }
+        .overflow-y-auto   { overflow-y: auto; }
+        .items-center  { align-items: center; }
+        .items-start   { align-items: flex-start; }
+        .items-end     { align-items: flex-end; }
+        .justify-between { justify-content: space-between; }
+        .grid          { display: grid; }
+        .grid-cols-2   { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .grid-cols-3   { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .grid-cols-4   { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        .grid-cols-12  { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+        .col-span-4    { grid-column: span 4 / span 4; }
+        .col-span-8    { grid-column: span 8 / span 8; }
+        .gap-1  { gap: 0.25rem; }
+        .gap-2  { gap: 0.5rem; }
+        .gap-4  { gap: 1rem; }
+        .gap-6  { gap: 1.5rem; }
+        .gap-8  { gap: 2rem; }
+        .gap-10 { gap: 2.5rem; }
+        .space-y-4 > * + * { margin-top: 1rem; }
+        .space-y-6 > * + * { margin-top: 1.5rem; }
+        .pr-6  { padding-right: 1.5rem; }
+        .px-2  { padding-left: 0.5rem;  padding-right: 0.5rem; }
+        .px-4  { padding-left: 1rem;    padding-right: 1rem; }
+        .px-8  { padding-left: 2rem;    padding-right: 2rem; }
+        .px-10 { padding-left: 2.5rem;  padding-right: 2.5rem; }
+        .py-5  { padding-top: 1.25rem;  padding-bottom: 1.25rem; }
+        .py-6  { padding-top: 1.5rem;   padding-bottom: 1.5rem; }
+        .p-8   { padding: 2rem; }
+        .p-10  { padding: 2.5rem; }
+        .p-12  { padding: 3rem; }
+        .mt-5  { margin-top: 1.25rem; }
+        .mt-6  { margin-top: 1.5rem; }
+        .mb-1  { margin-bottom: 0.25rem; }
+        .mb-2  { margin-bottom: 0.5rem; }
+        .mb-3  { margin-bottom: 0.75rem; }
+        .mb-4  { margin-bottom: 1rem; }
+        .mb-10 { margin-bottom: 2.5rem; }
+        .mb-12 { margin-bottom: 3rem; }
+        .z-10  { z-index: 10; }
+        .w-3   { width: 0.75rem; }
+        .w-20  { width: 5rem; }
+        .h-3   { height: 0.75rem; }
+        .h-\[1px\] { height: 1px; }
+
+        .font-black  { font-weight: 900; }
+        .font-bold   { font-weight: 700; }
+        .font-mono   { font-family: 'Fira Code', monospace; }
+        .italic      { font-style: italic; }
+        .uppercase   { text-transform: uppercase; }
+        .text-xl   { font-size: 1.25rem;  line-height: 1.75rem; }
+        .text-2xl  { font-size: 1.5rem;   line-height: 2rem; }
+        .text-4xl  { font-size: 2.25rem;  line-height: 2.5rem; }
+        .text-5xl  { font-size: 3rem;     line-height: 1; }
+        .text-7xl  { font-size: 4.5rem;   line-height: 1; }
+        .text-\[8px\]  { font-size: 8px; }
+        .text-\[9px\]  { font-size: 9px; }
+        .text-\[10px\] { font-size: 10px; }
+        .text-\[11px\] { font-size: 11px; }
+        .leading-none    { line-height: 1; }
+        .leading-\[0\.9\] { line-height: 0.9; }
+        .leading-relaxed { line-height: 1.625; }
+        .tracking-tight    { letter-spacing: -0.025em; }
+        .tracking-tighter  { letter-spacing: -0.05em; }
+        .tracking-widest   { letter-spacing: 0.25em; }
+        .tracking-\[0\.3em\] { letter-spacing: 0.3em; }
+        .tracking-\[0\.4em\] { letter-spacing: 0.4em; }
+        .tracking-\[0\.5em\] { letter-spacing: 0.5em; }
+        .tracking-\[5px\]    { letter-spacing: 5px; }
+        .tracking-\[10px\]   { letter-spacing: 10px; }
+
+        .text-white       { color: #ffffff; }
+        .text-white\/20   { color: rgba(255,255,255,0.2); }
+        .text-white\/30   { color: rgba(255,255,255,0.3); }
+        .text-white\/40   { color: rgba(255,255,255,0.4); }
+        .text-purple-500  { color: #a855f7; }
+        .bg-purple-600    { background-color: #9333ea; }
+        .bg-purple-600\/10 { background-color: rgba(147,51,234,0.1); }
+        .bg-white\/5       { background-color: rgba(255,255,255,0.05); }
+        .bg-white\/\[0\.01\] { background-color: rgba(255,255,255,0.01); }
+        .border            { border-width: 1px; border-style: solid; }
+        .border-white\/5   { border-color: rgba(255,255,255,0.05); }
+        .border-white\/10  { border-color: rgba(255,255,255,0.1); }
+        .border-white\/20  { border-color: rgba(255,255,255,0.2); }
+        .border-purple-500\/20 { border-color: rgba(168,85,247,0.2); }
+        .border-purple-500\/30 { border-color: rgba(168,85,247,0.3); }
+        .opacity-70  { opacity: 0.7; }
+
+        .rounded-full    { border-radius: 9999px; }
+        .rounded-3xl     { border-radius: 1.5rem; }
+        .rounded-\[30px\] { border-radius: 30px; }
+        .rounded-\[40px\] { border-radius: 40px; }
+
+        .shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
+        .shadow-\[0_0_15px_rgba\(168\,85\,247\,0\.8\)\] { box-shadow: 0 0 15px rgba(168,85,247,0.8); }
+
+        .backdrop-blur-xl { backdrop-filter: blur(24px); }
+
+        .transition-all       { transition: all 0.15s ease; }
+        .transition-transform { transition: transform 0.3s ease; }
+        .duration-300         { transition-duration: 300ms; }
+
+        .translate-y-full  { transform: translateY(100%); }
+        .group:hover .group-hover\:translate-y-0 { transform: translateY(0); }
+        .group:hover .group-hover\:text-purple-400 { color: #c084fc; }
+
+        #canvas-wrap {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            background:
+                radial-gradient(circle at 50% 50%, rgba(188,19,254,0.08) 0%, transparent 70%),
+                radial-gradient(circle at 20% 20%, rgba(251,146,60,0.05) 0%, transparent 40%),
+                #020203;
+        }
+        canvas { display: block; cursor: crosshair; }
+
+        .sidebar {
+            width: 420px;
+            z-index: 50;
+            position: relative;
+            background: var(--panel);
+            border-right: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(60px);
+            box-shadow: 25px 0 100px rgba(0,0,0,0.95);
+            overflow-y: auto;
+        }
+
+        .ctrl-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        .ctrl-card h3 {
+            font-size: 10px;
+            font-weight: 900;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #ui-layer { position: absolute; inset: 0; pointer-events: none; z-index: 20; }
+
+        /* ── Vertex dot with delete button ── */
+        .glow-point {
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            background: #fff;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 30;
+            border: 3px solid #000;
+            cursor: grab;
+            pointer-events: auto;
+            transition: transform 0.1s ease, box-shadow 0.2s ease;
+            box-shadow: 0 0 8px rgba(255,255,255,0.4), 0 0 16px rgba(188,19,254,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 900;
+            color: black;
+            touch-action: none;
+        }
+        .glow-point:active { cursor: grabbing; transform: translate(-50%, -50%) scale(1.3); }
+
+        /* Primary focus — the "from" point (A), bright orange */
+        .glow-point.is-focus-primary {
+            background: #fb923c;
+            border-color: #fff;
+            color: #fff;
+            box-shadow: 0 0 0 4px rgba(251,146,60,0.35), 0 0 20px rgba(251,146,60,0.7), 0 0 40px rgba(251,146,60,0.4);
+            transform: translate(-50%, -50%) scale(1.15);
+            z-index: 32;
+        }
+        /* Secondary focus — the "to" point (B), amber/gold */
+        .glow-point.is-focus-secondary {
+            background: #fbbf24;
+            border-color: #000;
+            color: #000;
+            box-shadow: 0 0 0 3px rgba(251,191,36,0.3), 0 0 16px rgba(251,191,36,0.6);
+            transform: translate(-50%, -50%) scale(1.08);
+            z-index: 31;
+        }
+
+        /* Delete × badge on each vertex */
+        .del-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 20px;
+            height: 20px;
+            background: #ef4444;
+            border-radius: 50%;
+            font-size: 11px;
+            font-weight: 900;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            pointer-events: auto;
+            border: 2px solid #000;
+            line-height: 1;
+            z-index: 35;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+        }
+        .glow-point:hover .del-badge { opacity: 1; }
+
+        .label-node {
+            position: absolute;
+            transform: translate(-50%, -100%);
+            margin-top: -30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            pointer-events: none;
+        }
+        .node-box {
+            background: rgba(2,2,3,0.9);
+            border: 1.5px solid rgba(255,255,255,0.2);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-family: 'Fira Code', monospace;
+            font-weight: 700;
+            font-size: 16.5px;
+            backdrop-filter: blur(10px);
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .btn-map {
+            padding: 0.5rem;
+            border-radius: 0.75rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            transition: all 0.15s ease;
+            color: #94a3b8;
+            cursor: pointer;
+        }
+        .btn-map:hover {
+            background: rgba(168,85,247,0.2);
+            color: #ffffff;
+        }
+
+        /* Add Point button — teal accent */
+        .btn-addpt {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            background: rgba(20,184,166,0.12);
+            border: 1px solid rgba(20,184,166,0.4);
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            color: #2dd4bf;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn-addpt:hover { background: rgba(20,184,166,0.25); color: #fff; }
+        .btn-addpt.active { background: rgba(20,184,166,0.35); color: #fff; box-shadow: 0 0 20px rgba(20,184,166,0.5); }
+
+        .btn-primary {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 1rem;
+            background: linear-gradient(to right, #9333ea, #4f46e5);
+            border: 1px solid rgba(192,132,252,0.5);
+            font-size: 12px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            transition: all 0.15s ease;
+            color: #ffffff;
+            cursor: pointer;
+            box-shadow: 0 10px 40px rgba(188,19,254,0.4);
+        }
+        .btn-primary:active { transform: scale(0.95); }
+
+        .metrics-hud {
+            position: absolute;
+            top: 40px;
+            left: 460px;
+            display: flex;
+            gap: 60px;
+            z-index: 40;
+            pointer-events: none;
+        }
+        .metric-value {
+            font-size: 64px;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: -4px;
+            line-height: 1;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* Area sub-label for enclosed regions */
+        .metric-sub {
+            font-size: 11px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.3);
+            letter-spacing: 0.1em;
+            margin-top: 4px;
+        }
+
+        .latex-display {
+            background: #000;
+            padding: 20px;
+            border-radius: 18px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .fire-btn {
+            padding: 1.25rem 2.5rem;
+            background-color: #ea580c;
+            color: #ffffff;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.3em;
+            border-radius: 9999px;
+            border: none;
+            transition: all 0.15s ease;
+            font-style: italic;
+            cursor: pointer;
+            box-shadow: 0 0 40px rgba(234,88,12,0.4);
+            width: 100%;
+        }
+        .fire-btn:hover  { background-color: #f97316; transform: scale(1.05); }
+        .fire-btn:active { transform: scale(0.95); }
+
+        input[type=range] {
+            appearance: none;
+            -webkit-appearance: none;
+            background: rgba(255,255,255,0.1);
+            height: 6px;
+            border-radius: 9999px;
+            width: 100%;
+            outline: none;
+            transition: all 0.15s ease;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #ffffff;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid #bc13fe;
+            box-shadow: 0 0 15px rgba(255,255,255,0.5);
+            transition: transform 0.15s ease;
+        }
+        input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.25); }
+
+        #pbx-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.96);
+            backdrop-filter: blur(40px);
+            z-index: 1000;
+            display: none;
+            padding: 40px;
+            flex-direction: column;
+            align-items: center;
+        }
+        #pbx-window {
+            background: #08080a;
+            border: 1px solid rgba(255,255,255,0.1);
+            width: 100%;
+            max-width: 1400px;
+            height: 90vh;
+            border-radius: 40px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 50px 100px rgba(0,0,0,1);
+        }
+
+        .pbx-launcher { position: absolute; bottom: 30px; right: 30px; z-index: 60; }
+
+        .history-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 24px;
+            border-radius: 20px;
+            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+        .history-card:hover {
+            background: rgba(188,19,254,0.05);
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .proof-box {
+            background: rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            font-family: 'Fira Code', monospace;
+            color: #a855f7;
+            margin-top: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .group { position: relative; }
+        .group .group-slide {
+            position: absolute;
+            inset: 0;
+            background: #9333ea;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            border-radius: inherit;
+        }
+        .group:hover .group-slide { transform: translateY(0); }
+        .group .group-label {
+            position: relative;
+            z-index: 10;
+            color: #ffffff;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+        }
+        .group:hover .group-label { color: #ffffff; }
+
+        /* Add-point mode cursor hint on canvas */
+        body.add-pt-mode canvas { cursor: cell !important; }
+
+        /* Canvas tooltip for add mode */
+        #add-hint {
+            position: fixed;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(20,184,166,0.9);
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            pointer-events: none;
+            z-index: 100;
+            display: none;
+        }
+        body.add-pt-mode #add-hint { display: block; }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <div id="canvas-wrap"><canvas id="mainCanvas"></canvas></div>
+    <div id="ui-layer"></div>
+    <div id="add-hint">Click canvas to place point — Esc to cancel</div>
+
+    <div class="metrics-hud">
+        <div class="flex flex-col">
+            <div style="font-size:10px;font-weight:900;text-transform:uppercase;color:#a855f7;letter-spacing:0.3em;margin-bottom:4px;">Area (u²)</div>
+            <div id="area-val" class="metric-value">0.0</div>
+            <div id="area-sub" class="metric-sub"></div>
+        </div>
+        <div class="flex flex-col">
+            <div style="font-size:10px;font-weight:900;text-transform:uppercase;color:#a855f7;letter-spacing:0.3em;margin-bottom:4px;">Perimeter (u)</div>
+            <div id="peri-val" class="metric-value">0.0</div>
+        </div>
+        <div class="flex flex-col">
+            <div style="font-size:10px;font-weight:900;text-transform:uppercase;color:#a855f7;letter-spacing:0.3em;margin-bottom:4px;">Points</div>
+            <div id="pts-val" class="metric-value" style="font-size:40px;">0</div>
+        </div>
+    </div>
+
+    <div class="pbx-launcher">
+        <button onclick="togglePBX()" class="group flex flex-col items-end backdrop-blur-xl"
+            style="background:rgba(147,51,234,0.1);padding:1.5rem 2rem;border-radius:30px;border:1px solid rgba(168,85,247,0.3);transition:all 0.2s;box-shadow:0 25px 50px rgba(0,0,0,0.5);cursor:pointer;overflow:hidden;">
+            <div style="font-size:10px;font-weight:900;color:#a855f7;letter-spacing:5px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;">Algebraic Ledger</div>
+            <div class="group-slide"></div>
+            <div class="group-label" style="font-size:1.5rem;letter-spacing:-0.025em;font-style:italic;text-transform:uppercase;">Examine Moves</div>
+        </button>
+    </div>
+
+    <div id="pbx-overlay">
+        <div id="pbx-window">
+            <div class="p-12 h-full flex flex-col">
+                <div class="flex justify-between items-start mb-12">
+                    <div>
+                        <h2 style="font-size:4.5rem;font-weight:900;color:#fff;font-style:italic;letter-spacing:-0.05em;text-transform:uppercase;line-height:1;">Move <span style="color:#a855f7;">History</span></h2>
+                        <div class="flex items-center gap-4 mt-6">
+                            <span style="height:1px;width:5rem;background:rgba(168,85,247,0.5);display:block;"></span>
+                            <p style="color:rgba(255,255,255,0.4);font-weight:700;text-transform:uppercase;font-size:11px;letter-spacing:0.5em;">Transformation Mapping Ledger</p>
+                        </div>
+                    </div>
+                    <button onclick="togglePBX()" class="group"
+                        style="padding:1.25rem 2.5rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9999px;overflow:hidden;transition:border-color 0.2s;cursor:pointer;">
+                        <div class="group-slide"></div>
+                        <span class="group-label">Resume Session</span>
+                    </button>
+                </div>
+                <div class="grid grid-cols-12 gap-10 flex-1 overflow-hidden">
+                    <div class="col-span-4 flex flex-col gap-8 overflow-hidden"
+                        style="background:rgba(255,255,255,0.01);padding:2.5rem;border-radius:40px;border:1px solid rgba(255,255,255,0.05);">
+                        <div style="font-size:10px;font-weight:900;color:#a855f7;text-transform:uppercase;letter-spacing:0.5em;">Topology Overview</div>
+                        <div id="stats-summary" class="flex flex-col gap-6"></div>
+                    </div>
+                    <div class="col-span-8 flex flex-col gap-6 overflow-hidden">
+                        <div style="font-size:10px;font-weight:900;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.5em;padding:0 1rem;">Action Sequence Ledger</div>
+                        <div id="history-ledger" class="flex-1 overflow-y-auto pr-6 space-y-6"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex h-screen relative">
+        <aside class="sidebar p-8">
+            <header class="mb-10">
+                <div class="flex items-center gap-4 mb-3">
+                    <span class="w-3 h-3" style="border-radius:50%;background:#9333ea;box-shadow:0 0 15px rgba(168,85,247,0.8);display:block;"></span>
+                    <div style="font-size:10px;font-weight:900;color:rgba(255,255,255,0.3);letter-spacing:10px;text-transform:uppercase;">Vinculum Logic</div>
+                </div>
+                <h1 style="text-transform:uppercase;font-size:3rem;font-weight:900;color:#fff;letter-spacing:-0.05em;line-height:0.9;">Visual<br/><span style="color:#a855f7;font-style:italic;">Geometry</span></h1>
+            </header>
+
+            <div class="flex-1 space-y-4">
+                <section class="ctrl-card" style="border-color:rgba(168,85,247,0.2);">
+                    <h3>Polygon Primatives</h3>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="loadShape('triangle')" class="btn-map">Tri</button>
+                        <button onclick="loadShape('quad')" class="btn-map" style="color:#fff;border-color:rgba(255,255,255,0.2);">Rect 10x6</button>
+                        <button onclick="loadShape('pentagon')" class="btn-map">Pent</button>
+                        <button onclick="loadShape('hexagon')" class="btn-map">Hex</button>
+                        <button onclick="loadShape('rhombus')" class="btn-map">Rhom</button>
+                        <button onclick="loadShape('trapezoid')" class="btn-map">Trap</button>
+                    </div>
+                </section>
+
+                <!-- TRACE MEMORY -->
+                <section class="ctrl-card" style="border-color:rgba(255,40,40,0.3);">
+                    <h3 style="color:#f87171;">Trace Memory</h3>
+                    <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.2);text-transform:uppercase;letter-spacing:0.3em;text-align:center;margin-bottom:10px;" id="trace-count">no traces</div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                        <!-- Recall Last — big red smartboard button -->
+                        <button id="btn-recall-last" onclick="recallLast()" disabled style="
+                            padding:14px 8px;
+                            border-radius:14px;
+                            background:rgba(255,34,34,0.12);
+                            border:2px solid rgba(255,34,34,0.4);
+                            color:#f87171;
+                            font-size:10px;
+                            font-weight:900;
+                            text-transform:uppercase;
+                            letter-spacing:0.2em;
+                            cursor:pointer;
+                            transition:all 0.15s ease;
+                            opacity:0.3;
+                            display:flex;flex-direction:column;align-items:center;gap:6px;
+                        ">
+                            <span style="font-size:22px;line-height:1;">⟳</span>
+                            Recall<br/>Last
+                        </button>
+                        <!-- Clear Traces — big dark smartboard button -->
+                        <button id="btn-clear-traces" onclick="clearTraces()" disabled style="
+                            padding:14px 8px;
+                            border-radius:14px;
+                            background:rgba(255,255,255,0.04);
+                            border:2px solid rgba(255,255,255,0.1);
+                            color:rgba(255,255,255,0.4);
+                            font-size:10px;
+                            font-weight:900;
+                            text-transform:uppercase;
+                            letter-spacing:0.2em;
+                            cursor:pointer;
+                            transition:all 0.15s ease;
+                            opacity:0.3;
+                            display:flex;flex-direction:column;align-items:center;gap:6px;
+                        ">
+                            <span style="font-size:22px;line-height:1;">✕</span>
+                            Clear<br/>Traces
+                        </button>
+                    </div>
+                    <div style="font-size:9px;color:rgba(255,255,255,0.18);text-align:center;margin-top:8px;line-height:1.5;">
+                        Recall pins the last position in red with coordinates
+                    </div>
+                </section>
+                <section class="ctrl-card" style="border-color:rgba(20,184,166,0.3);">
+                    <h3 style="color:#2dd4bf;">Point Editor</h3>
+                    <div class="flex flex-col gap-2">
+                        <button id="addPtBtn" onclick="toggleAddPointMode()" class="btn-addpt">
+                            + Add Point to Shape
+                        </button>
+                        <div style="font-size:9px;color:rgba(255,255,255,0.25);text-align:center;margin-top:2px;">
+                            Hover a vertex dot to reveal × delete button
+                        </div>
+                    </div>
+                </section>
+
+                <section class="ctrl-card">
+                    <h3>Focus Segment Mapping</h3>
+                    <div style="display:flex;gap:12px;margin-bottom:10px;align-items:center;">
+                        <div style="display:flex;align-items:center;gap:6px;">
+                            <div style="width:14px;height:14px;border-radius:50%;background:#fb923c;box-shadow:0 0 8px rgba(251,146,60,0.8);flex-shrink:0;"></div>
+                            <span style="font-size:9px;font-weight:900;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.2em;">From</span>
+                        </div>
+                        <div style="width:30px;height:2px;border-top:2px dashed #fb923c;opacity:0.7;"></div>
+                        <div style="display:flex;align-items:center;gap:6px;">
+                            <div style="width:14px;height:14px;border-radius:50%;background:#fbbf24;box-shadow:0 0 8px rgba(251,191,36,0.7);flex-shrink:0;"></div>
+                            <span style="font-size:9px;font-weight:900;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.2em;">To</span>
+                        </div>
+                        <span style="font-size:9px;color:rgba(255,255,255,0.2);margin-left:auto;">tap dot to select</span>
+                    </div>
+                    <div id="latex-box" class="latex-display"></div>
+                </section>
+
+                <section class="ctrl-card">
+                    <h3>Isometry: Rotation</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="flex flex-col gap-2">
+                            <span style="font-size:8px;font-weight:900;color:rgba(255,255,255,0.2);text-transform:uppercase;">Clockwise (Right)</span>
+                            <div class="grid grid-cols-3 gap-1">
+                                <button onclick="applyRotation('CW', 90)" class="btn-map">90</button>
+                                <button onclick="applyRotation('CW', 180)" class="btn-map">180</button>
+                                <button onclick="applyRotation('CW', 270)" class="btn-map">270</button>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <span style="font-size:8px;font-weight:900;color:rgba(255,255,255,0.2);text-transform:uppercase;">Counter (Left)</span>
+                            <div class="grid grid-cols-3 gap-1">
+                                <button onclick="applyRotation('CCW', 90)" class="btn-map">90</button>
+                                <button onclick="applyRotation('CCW', 180)" class="btn-map">180</button>
+                                <button onclick="applyRotation('CCW', 270)" class="btn-map">270</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="ctrl-card">
+                    <h3>Isometry: Reflection</h3>
+                    <div class="grid grid-cols-4 gap-1">
+                        <button onclick="stageReflection('xAxis')" class="btn-map">X-Axis</button>
+                        <button onclick="stageReflection('yAxis')" class="btn-map">Y-Axis</button>
+                        <button onclick="stageReflection('yx')" class="btn-map">y=x</button>
+                        <button onclick="stageReflection('nyx')" class="btn-map">y=-x</button>
+                    </div>
+                </section>
+
+                <section class="ctrl-card" style="background:rgba(255,255,255,0.05);">
+                    <h3>Vector Translation</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <span style="font-size:8px;font-weight:900;color:rgba(255,255,255,0.2);text-transform:uppercase;">Horizontal (Δx)</span>
+                                <span id="tx-latex" style="color:#fff;font-size:10px;"></span>
+                            </div>
+                            <input type="range" id="transX" min="-20" max="20" step="1" value="0" oninput="updateVectorUI()">
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <span style="font-size:8px;font-weight:900;color:rgba(255,255,255,0.2);text-transform:uppercase;">Vertical (Δy)</span>
+                                <span id="ty-latex" style="color:#fff;font-size:10px;"></span>
+                            </div>
+                            <input type="range" id="transY" min="-20" max="20" step="1" value="0" oninput="updateVectorUI()">
+                        </div>
+                        <button onclick="executeTranslation()" class="btn-primary">Execute Δ Translation</button>
+                    </div>
+                </section>
+
+                <section class="ctrl-card" style="border-color:rgba(99,102,241,0.35);">
+                    <h3 style="color:#818cf8;">Magnitude Scale (Zoom)</h3>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                        <!-- Zoom Out -->
+                        <button onclick="adjustZoom(-8)" style="
+                            width:56px;height:56px;border-radius:14px;flex-shrink:0;
+                            background:rgba(99,102,241,0.12);border:2px solid rgba(99,102,241,0.4);
+                            color:#818cf8;font-size:26px;font-weight:900;cursor:pointer;
+                            transition:all 0.15s ease;display:flex;align-items:center;justify-content:center;
+                        ">−</button>
+
+                        <!-- Scale readout + mini slider -->
+                        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                            <div style="display:flex;align-items:baseline;gap:4px;">
+                                <span id="zoom-val" style="font-size:28px;font-weight:900;color:#fff;font-family:'Fira Code',monospace;letter-spacing:-2px;">28</span>
+                                <span style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);">px/u</span>
+                            </div>
+                            <input type="range" id="zoom-slider" min="10" max="80" step="2" value="28"
+                                oninput="setZoom(parseInt(this.value))"
+                                style="width:100%;">
+                        </div>
+
+                        <!-- Zoom In -->
+                        <button onclick="adjustZoom(8)" style="
+                            width:56px;height:56px;border-radius:14px;flex-shrink:0;
+                            background:rgba(99,102,241,0.12);border:2px solid rgba(99,102,241,0.4);
+                            color:#818cf8;font-size:26px;font-weight:900;cursor:pointer;
+                            transition:all 0.15s ease;display:flex;align-items:center;justify-content:center;
+                        ">+</button>
+                    </div>
+                    <!-- Reset zoom -->
+                    <button onclick="setZoom(28)" style="
+                        width:100%;padding:8px;border-radius:10px;
+                        background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);
+                        color:rgba(255,255,255,0.35);font-size:9px;font-weight:900;
+                        text-transform:uppercase;letter-spacing:0.3em;cursor:pointer;
+                        transition:all 0.15s ease;
+                    ">Reset Zoom</button>
+                </section>
+
+                <section class="ctrl-card">
+                    <div class="flex items-center gap-4 px-2" style="margin-bottom:10px;">
+                        <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.2);">0.25×</span>
+                        <input type="range" id="k-slider" min="0.25" max="4" step="0.25" value="1.0" class="flex-1" oninput="updateDilationUI()">
+                        <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.2);">4.0×</span>
+                    </div>
+                    <!-- live preview strip -->
+                    <div id="dilation-preview" style="background:rgba(0,0,0,0.4);border:1px solid rgba(255,100,0,0.25);border-radius:12px;padding:10px 14px;margin-bottom:12px;font-family:'Fira Code',monospace;font-size:11px;line-height:1.7;">
+                        <div style="display:flex;justify-content:space-between;">
+                            <span style="color:rgba(255,255,255,0.3);">factor k</span>
+                            <span id="dp-k" style="color:#fb923c;font-weight:700;">1.0×  —  no change</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;">
+                            <span style="color:rgba(255,255,255,0.3);">area after</span>
+                            <span id="dp-area" style="color:#fff;font-weight:700;">—</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;">
+                            <span style="color:rgba(255,255,255,0.3);">perimeter after</span>
+                            <span id="dp-peri" style="color:#fff;font-weight:700;">—</span>
+                        </div>
+                    </div>
+                    <button id="dilation-btn" onclick="fireDilation()" class="fire-btn">Scale Manifold</button>
+                </section>
+            </div>
+        </aside>
+
+        <main class="flex-1 relative"></main>
+    </div>
+
+<script>
+    const canvas = document.getElementById('mainCanvas');
+    const ctx    = canvas.getContext('2d');
+    const uiLayer = document.getElementById('ui-layer');
+
+    const shapeLibrary = {
+        triangle:  [[0,0],[10,0],[5,6]],
+        quad:      [[0,0],[10,0],[10,6],[0,6]],
+        pentagon:  [[0,3],[5,0],[10,3],[8,6],[2,6]],
+        hexagon:   [[0,3],[3,0],[7,0],[10,3],[7,6],[3,6]],
+        rhombus:   [[0,0],[10,0],[12,6],[2,6]],
+        trapezoid: [[-2,0],[12,0],[8,6],[2,6]]
+    };
+
+    let state = {
+        pts: JSON.parse(JSON.stringify(shapeLibrary.quad)),
+        scale: 28,
+        originX: 0, originY: 0,
+        focusA: 0, focusB: 2,
+        ghosts: [],
+        pinnedGhost: null,
+        history: [],
+        pendingReflection: null,
+        draggingIdx: -1,
+        addPointMode: false
+    };
+
+    const GHOST_LIFE = 60000;
+
+    function snap(val) { return Math.round(val * 2) / 2; }
+
+    function addHistory(type, title, explanation, proof) {
+        state.history.unshift({ type, title, explanation, proof, time: new Date().toLocaleTimeString() });
+        if (state.history.length > 50) state.history.pop();
+    }
+
+    function addGhost() {
+        state.ghosts.push({ pts: JSON.parse(JSON.stringify(state.pts)), timestamp: Date.now() });
+        updateTraceButtons();
+    }
+
+    // ── Add / Delete point mode ──────────────────────────────────
+    function toggleAddPointMode() {
+        state.addPointMode = !state.addPointMode;
+        document.body.classList.toggle('add-pt-mode', state.addPointMode);
+        document.getElementById('addPtBtn').classList.toggle('active', state.addPointMode);
+    }
+
+    function clearTraces() {
+        state.ghosts = [];
+        state.pinnedGhost = null;
+        updateTraceButtons();
+        render();
+    }
+
+    function recallLast() {
+        // Pin the most recent ghost as the red recall ghost
+        if (state.ghosts.length === 0) return;
+        state.pinnedGhost = JSON.parse(JSON.stringify(state.ghosts[state.ghosts.length - 1]));
+        updateTraceButtons();
+        render();
+    }
+
+    function updateTraceButtons() {
+        const clearBtn  = document.getElementById('btn-clear-traces');
+        const recallBtn = document.getElementById('btn-recall-last');
+        const hasGhosts = state.ghosts.length > 0;
+        const hasPinned = state.pinnedGhost !== null;
+
+        clearBtn.disabled  = !hasGhosts && !hasPinned;
+        clearBtn.style.opacity  = (!hasGhosts && !hasPinned) ? '0.3' : '1';
+        recallBtn.disabled = !hasGhosts;
+        recallBtn.style.opacity = !hasGhosts ? '0.3' : '1';
+
+        // Show count badge
+        document.getElementById('trace-count').textContent =
+            state.ghosts.length > 0 ? `${state.ghosts.length} trace${state.ghosts.length > 1 ? 's' : ''}` : 'no traces';
+    }
+
+
+    function cancelAddPointMode() {
+        state.addPointMode = false;
+        document.body.classList.remove('add-pt-mode');
+        document.getElementById('addPtBtn').classList.remove('active');
+    }
+
+    // Handle canvas click for add-point mode
+    // Note: ui-layer sits above canvas so e.target will be ui-layer, not canvas — we just check mode
+    window.addEventListener('pointerdown', (e) => {
+        if (!state.addPointMode) return;
+        // Ignore clicks on sidebar or vertex dots / delete badges
+        if (e.target.closest('aside')) return;
+        if (e.target.closest('.glow-point')) return;
+        if (e.target.closest('.del-badge')) return;
+        e.preventDefault();
+
+        const rect = canvas.getBoundingClientRect();
+        const cx = e.clientX - rect.left;
+        const cy = e.clientY - rect.top;
+        const lx = snap((cx - state.originX) / state.scale);
+        const ly = snap((state.originY - cy) / state.scale);
+
+        addGhost();
+        const idx = findBestInsertIndex(lx, ly);
+        state.pts.splice(idx, 0, [lx, ly]);
+
+        if (state.focusA >= idx) state.focusA++;
+        if (state.focusB >= idx) state.focusB++;
+
+        const label = String.fromCharCode(65 + idx);
+        addHistory("Point", `Add Point ${label}`, `New vertex inserted at (${lx}, ${ly}).`,
+            `P_{new} = (${lx},\\,${ly})`);
+
+        cancelAddPointMode();
+        render();
+    });
+
+    // Find best edge to split when inserting a new point
+    function findBestInsertIndex(x, y) {
+        let best = 1, bestDist = Infinity;
+        for (let i = 0; i < state.pts.length; i++) {
+            const a = state.pts[i];
+            const b = state.pts[(i+1) % state.pts.length];
+            // distance from point to segment midpoint
+            const mx = (a[0]+b[0])/2, my = (a[1]+b[1])/2;
+            const d = Math.hypot(x-mx, y-my);
+            if (d < bestDist) { bestDist = d; best = i+1; }
+        }
+        return best;
+    }
+
+    function deletePoint(idx) {
+        if (state.pts.length <= 3) {
+            alert("A polygon needs at least 3 points.");
+            return;
+        }
+        addGhost();
+        const label = String.fromCharCode(65 + idx);
+        addHistory("Point", `Delete Point ${label}`, `Vertex removed from polygon.`,
+            `P_{${label}} \\text{ removed}`);
+        state.pts.splice(idx, 1);
+        state.focusA = Math.min(state.focusA, state.pts.length-1);
+        state.focusB = Math.min(state.focusB, state.pts.length-1);
+        if (state.focusA === state.focusB) state.focusB = (state.focusA + 1) % state.pts.length;
+        render();
+    }
+
+    // ── Shape loaders ──────────────────────────────────────────
+    function setZoom(val) {
+        state.scale = Math.min(80, Math.max(10, val));
+        document.getElementById('zoom-val').textContent = state.scale;
+        document.getElementById('zoom-slider').value = state.scale;
+        render();
+    }
+
+    function adjustZoom(delta) {
+        setZoom(state.scale + delta);
+    }
+
+    function loadShape(type) {
+        addGhost();
+        state.pts = JSON.parse(JSON.stringify(shapeLibrary[type]));
+        // Start at A→C (first to third point) matching the yellow diagonal
+        state.focusA = 0; state.focusB = 2;
+        cancelAddPointMode();
+        const dims = type === 'quad' ? "10x6 " : "";
+        addHistory("Primitive", `Init ${dims}${type}`, `Polygon seeded at workspace origin.`, `S = \\{ P_1, P_2, ... P_n \\}`);
+        render();
+    }
+
+    function applyRotation(dir, deg) {
+        addGhost();
+        const actualDeg = (dir === 'CW') ? -deg : deg;
+        const rad = (actualDeg * Math.PI) / 180;
+        state.pts = state.pts.map(p => {
+            const nx = p[0] * Math.cos(rad) - p[1] * Math.sin(rad);
+            const ny = p[0] * Math.sin(rad) + p[1] * Math.cos(rad);
+            return [snap(nx), snap(ny)];
+        });
+        let cartesianMap = "(x, y) \\to (x', y')";
+        if (deg === 90)  cartesianMap = (dir === 'CW') ? "(x, y) \\to (y, -x)" : "(x, y) \\to (-y, x)";
+        if (deg === 180) cartesianMap = "(x, y) \\to (-x, -y)";
+        if (deg === 270) cartesianMap = (dir === 'CW') ? "(x, y) \\to (-y, x)" : "(x, y) \\to (y, -x)";
+        const label = (dir === 'CW') ? `Clockwise (Right) ${deg}°` : `Counter-Clockwise (Left) ${deg}°`;
+        addHistory("Isometry", label, `Rigid motion rotation about origin.`, cartesianMap);
+        render();
+    }
+
+    function stageReflection(val) {
+        if (state.pendingReflection === val) {
+            addGhost();
+            executeReflection(val);
+            let proof = "(x, y) \\to (x', y')", title = `Flip: ${val}`;
+            if (val === 'xAxis') { proof = "(x, y) \\to (x, -y)";   title = "Reflection: X-Axis"; }
+            if (val === 'yAxis') { proof = "(x, y) \\to (-x, y)";   title = "Reflection: Y-Axis"; }
+            if (val === 'yx')    { proof = "(x, y) \\to (y, x)";    title = "Reflection: y = x"; }
+            if (val === 'nyx')   { proof = "(x, y) \\to (-y, -x)";  title = "Reflection: y = -x"; }
+            addHistory("Reflection", title, `Orthogonal mapping across line of symmetry.`, proof);
+            state.pendingReflection = null;
+        } else {
+            state.pendingReflection = val;
+        }
+        render();
+    }
+
+    function executeReflection(val) {
+        if (val === 'xAxis') state.pts = state.pts.map(p => [snap(p[0]),  snap(-p[1])]);
+        if (val === 'yAxis') state.pts = state.pts.map(p => [snap(-p[0]), snap(p[1])]);
+        if (val === 'yx')    state.pts = state.pts.map(p => [snap(p[1]),  snap(p[0])]);
+        if (val === 'nyx')   state.pts = state.pts.map(p => [snap(-p[1]), snap(-p[0])]);
+    }
+
+    function fireDilation() {
+        addGhost();
+        const k = parseFloat(document.getElementById('k-slider').value);
+        state.pts = state.pts.map(p => [snap(p[0] * k), snap(p[1] * k)]);
+        addHistory("Dilation", `Scale: ${k}x`, `Similarity mapping relative to origin.`, `(x, y) \\to (${k}x, ${k}y)`);
+        render();
+    }
+
+    function executeTranslation() {
+        addGhost();
+        const dx = parseInt(document.getElementById('transX').value);
+        const dy = parseInt(document.getElementById('transY').value);
+        state.pts = state.pts.map(p => [snap(p[0] + dx), snap(p[1] + dy)]);
+        addHistory("Translation", `Vector [${dx}, ${dy}]`, `Rigid shift along Δx and Δy.`, `(x, y) \\to (x + ${dx}, y + ${dy})`);
+        render();
+    }
+
+    function updateDilationUI() {
+        const k = parseFloat(document.getElementById('k-slider').value);
+        const btn = document.getElementById('dilation-btn');
+
+        // Button label
+        let action, btnColor;
+        if (k < 1)       { action = `Shrink  ×${k}`;  btnColor = '#3b82f6'; }
+        else if (k === 1){ action = `No Change  ×1`;   btnColor = '#6b7280'; }
+        else             { action = `Enlarge  ×${k}`;  btnColor = '#ea580c'; }
+        btn.textContent = action;
+        btn.style.backgroundColor = btnColor;
+        btn.style.boxShadow = k === 1 ? 'none' : `0 0 30px ${btnColor}88`;
+
+        // Preview numbers
+        const curArea = shoelaceArea(state.pts);
+        let curPeri = 0;
+        state.pts.forEach((p, i) => {
+            const next = state.pts[(i+1) % state.pts.length];
+            curPeri += Math.hypot(next[0]-p[0], next[1]-p[1]);
+        });
+        const newArea = (curArea * k * k).toFixed(1);
+        const newPeri = (curPeri * k).toFixed(1);
+
+        // k label with plain English
+        const kDesc = k < 1 ? `${k}×  —  shrink` : k > 1 ? `${k}×  —  enlarge` : `1×  —  no change`;
+        document.getElementById('dp-k').textContent    = kDesc;
+        document.getElementById('dp-area').textContent = `${newArea} u²  (was ${curArea.toFixed(1)})`;
+        document.getElementById('dp-peri').textContent = `${newPeri} u  (was ${curPeri.toFixed(1)})`;
+
+        // Color the k label
+        document.getElementById('dp-k').style.color =
+            k < 1 ? '#60a5fa' : k > 1 ? '#fb923c' : 'rgba(255,255,255,0.3)';
+    }
+
+    function updateVectorUI() {
+        katex.render(`\\Delta x = ${document.getElementById('transX').value}`, document.getElementById('tx-latex'));
+        katex.render(`\\Delta y = ${document.getElementById('transY').value}`, document.getElementById('ty-latex'));
+    }
+
+    function togglePBX() {
+        const overlay = document.getElementById('pbx-overlay');
+        const isShowing = overlay.style.display === 'flex';
+        overlay.style.display = isShowing ? 'none' : 'flex';
+        if (!isShowing) renderLedger();
+    }
+
+    function renderLedger() {
+        const ledger = document.getElementById('history-ledger');
+        ledger.innerHTML = state.history.map((item, idx) => `
+            <div class="history-card">
+                <div class="flex justify-between items-center mb-2">
+                    <span style="font-size:9px;font-weight:900;color:#a855f7;text-transform:uppercase;letter-spacing:0.25em;">${item.type}</span>
+                    <span style="font-size:10px;color:rgba(255,255,255,0.2);font-family:'Fira Code',monospace;">${item.time}</span>
+                </div>
+                <div style="color:#fff;font-weight:700;font-size:1.25rem;margin-bottom:0.5rem;font-style:italic;letter-spacing:-0.025em;text-transform:uppercase;">${item.title}</div>
+                <div style="color:rgba(255,255,255,0.4);font-size:11px;line-height:1.625;margin-bottom:1rem;">${item.explanation}</div>
+                <div class="proof-box"><div id="proof-${idx}"></div></div>
+            </div>
+        `).join('');
+        state.history.forEach((item, idx) => {
+            const el = document.getElementById(`proof-${idx}`);
+            if (el) katex.render(item.proof, el);
+        });
+        const area = document.getElementById('area-val').innerText;
+        const peri = document.getElementById('peri-val').innerText;
+        document.getElementById('stats-summary').innerHTML = `
+            <div style="padding:2rem;background:rgba(255,255,255,0.05);border-radius:1.5rem;border:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:flex-end;">
+                <span style="font-size:10px;font-weight:900;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.4em;">Area</span>
+                <span style="font-size:2.25rem;font-weight:900;color:#fff;font-style:italic;">${area}</span>
+            </div>
+            <div style="padding:2rem;background:rgba(255,255,255,0.05);border-radius:1.5rem;border:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:flex-end;">
+                <span style="font-size:10px;font-weight:900;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.4em;">Perim</span>
+                <span style="font-size:2.25rem;font-weight:900;color:#fff;font-style:italic;">${peri}</span>
+            </div>
+            <div style="padding:2rem;background:rgba(255,255,255,0.05);border-radius:1.5rem;border:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:flex-end;">
+                <span style="font-size:10px;font-weight:900;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.4em;">Points</span>
+                <span style="font-size:2.25rem;font-weight:900;color:#fff;font-style:italic;">${state.pts.length}</span>
+            </div>
+        `;
+    }
+
+    // ── Shoelace area (handles concave / complex polygons) ──────
+    function shoelaceArea(pts) {
+        let area = 0;
+        const n = pts.length;
+        for (let i = 0; i < n; i++) {
+            const a = pts[i], b = pts[(i+1) % n];
+            area += a[0]*b[1] - b[0]*a[1];
+        }
+        return Math.abs(area / 2);
+    }
+
+    // ── Render ──────────────────────────────────────────────────
+    function render() {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+        state.originX = 420 + (canvas.width - 420) / 2;
+        state.originY = canvas.height / 2 + 50;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        uiLayer.innerHTML = '';
+        drawGrid();
+        drawReflectionGhostLine();
+        drawGhosts();
+        drawShape();
+        drawACLine();          // always-on A→C dotted line
+        drawFocusSegment();
+        drawInteractions();
+        updateDisplayMath();
+        updateDilationUI();
+    }
+
+    function drawGrid() {
+        ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+        ctx.lineWidth = 1;
+        for (let x = state.originX % (state.scale/2); x < canvas.width; x += state.scale/2) {
+            ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,canvas.height); ctx.stroke();
+        }
+        for (let y = state.originY % (state.scale/2); y < canvas.height; y += state.scale/2) {
+            ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(canvas.width,y); ctx.stroke();
+        }
+        ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+        for (let x = state.originX % state.scale; x < canvas.width; x += state.scale) {
+            ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,canvas.height); ctx.stroke();
+        }
+        for (let y = state.originY % state.scale; y < canvas.height; y += state.scale) {
+            ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(canvas.width,y); ctx.stroke();
+        }
+        ctx.strokeStyle = 'rgba(188,19,254,0.4)';
+        ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(420, state.originY); ctx.lineTo(canvas.width, state.originY); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(state.originX, 0); ctx.lineTo(state.originX, canvas.height); ctx.stroke();
+    }
+
+    function drawReflectionGhostLine() {
+        if (!state.pendingReflection) return;
+        ctx.beginPath(); ctx.setLineDash([10,8]); ctx.lineWidth = 4; ctx.strokeStyle = '#fb923c';
+        const s = 3000;
+        if (state.pendingReflection === 'xAxis') { ctx.moveTo(state.originX-s, state.originY); ctx.lineTo(state.originX+s, state.originY); }
+        if (state.pendingReflection === 'yAxis') { ctx.moveTo(state.originX, state.originY-s); ctx.lineTo(state.originX, state.originY+s); }
+        if (state.pendingReflection === 'yx')    { ctx.moveTo(state.originX-s, state.originY+s); ctx.lineTo(state.originX+s, state.originY-s); }
+        if (state.pendingReflection === 'nyx')   { ctx.moveTo(state.originX-s, state.originY-s); ctx.lineTo(state.originX+s, state.originY+s); }
+        ctx.stroke(); ctx.setLineDash([]);
+    }
+
+    function drawGhosts() {
+        const now = Date.now();
+        state.ghosts = state.ghosts.filter(g => (now - g.timestamp) < GHOST_LIFE);
+
+        // Fading orange traces
+        state.ghosts.forEach(g => {
+            const alpha = 0.25 * (1 - (now - g.timestamp) / GHOST_LIFE);
+            ctx.beginPath(); ctx.strokeStyle = `rgba(251,146,60,${alpha})`; ctx.lineWidth = 4;
+            g.pts.forEach((p,i) => {
+                const sx = state.originX + p[0]*state.scale, sy = state.originY - p[1]*state.scale;
+                i === 0 ? ctx.moveTo(sx,sy) : ctx.lineTo(sx,sy);
+            });
+            ctx.closePath(); ctx.stroke();
+        });
+
+        // Pinned bright-red recall ghost with glow + coordinates
+        if (state.pinnedGhost) {
+            const pg = state.pinnedGhost.pts;
+            ctx.save();
+
+            // Outer glow
+            ctx.beginPath(); ctx.lineWidth = 18; ctx.strokeStyle = 'rgba(255,30,30,0.18)';
+            ctx.lineJoin = 'round';
+            pg.forEach((p,i) => {
+                const sx = state.originX + p[0]*state.scale, sy = state.originY - p[1]*state.scale;
+                i === 0 ? ctx.moveTo(sx,sy) : ctx.lineTo(sx,sy);
+            });
+            ctx.closePath(); ctx.stroke();
+
+            // Core red line
+            ctx.beginPath(); ctx.lineWidth = 3.5; ctx.strokeStyle = '#ff2222';
+            ctx.setLineDash([8, 4]);
+            ctx.lineJoin = 'round';
+            pg.forEach((p,i) => {
+                const sx = state.originX + p[0]*state.scale, sy = state.originY - p[1]*state.scale;
+                i === 0 ? ctx.moveTo(sx,sy) : ctx.lineTo(sx,sy);
+            });
+            ctx.closePath(); ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Red fill
+            ctx.beginPath();
+            pg.forEach((p,i) => {
+                const sx = state.originX + p[0]*state.scale, sy = state.originY - p[1]*state.scale;
+                i === 0 ? ctx.moveTo(sx,sy) : ctx.lineTo(sx,sy);
+            });
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(255,30,30,0.07)'; ctx.fill();
+
+            // Vertex dots + coordinate labels on the pinned ghost
+            pg.forEach((p, i) => {
+                const sx = state.originX + p[0]*state.scale, sy = state.originY - p[1]*state.scale;
+                const lbl = String.fromCharCode(65 + i);
+
+                // Glowing red dot
+                ctx.beginPath();
+                ctx.arc(sx, sy, 10, 0, Math.PI*2);
+                ctx.fillStyle = '#ff2222';
+                ctx.shadowColor = '#ff2222';
+                ctx.shadowBlur = 18;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                // White ring
+                ctx.beginPath();
+                ctx.arc(sx, sy, 10, 0, Math.PI*2);
+                ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                // Coordinate label pill
+                const coord = `${lbl}' (${p[0].toFixed(1)}, ${p[1].toFixed(1)})`;
+                ctx.font = '700 11px Fira Code, monospace';
+                const tw = ctx.measureText(coord).width;
+                const px = sx + 14, py = sy - 16;
+                const pw = tw + 14, ph = 20, pr = 6;
+
+                ctx.fillStyle = 'rgba(180,0,0,0.88)';
+                roundRect(ctx, px, py - ph/2, pw, ph, pr);
+                ctx.fill();
+
+                ctx.fillStyle = '#fff';
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(coord, px + 7, py);
+            });
+
+            ctx.restore();
+        }
+    }
+
+    function drawShape() {
+        ctx.beginPath(); ctx.lineWidth = 5; ctx.strokeStyle = '#bc13fe'; ctx.lineJoin = 'round';
+        state.pts.forEach((p,i) => {
+            const sx = state.originX + p[0]*state.scale, sy = state.originY - p[1]*state.scale;
+            i === 0 ? ctx.moveTo(sx,sy) : ctx.lineTo(sx,sy);
+        });
+        ctx.closePath(); ctx.stroke();
+        ctx.fillStyle = 'rgba(188,19,254,0.08)'; ctx.fill();
+    }
+
+    // Always draw dotted line from point A (index 0) to point C (index 2)
+    function drawACLine() {
+        if (state.pts.length < 3) return;
+        const pA = state.pts[0];
+        const pC = state.pts[2];
+        const ax = state.originX + pA[0]*state.scale, ay = state.originY - pA[1]*state.scale;
+        const cx = state.originX + pC[0]*state.scale, cy = state.originY - pC[1]*state.scale;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.setLineDash([6, 5]);
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = 'rgba(250,204,21,0.7)'; // yellow
+        ctx.moveTo(ax, ay);
+        ctx.lineTo(cx, cy);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Small label "AC" at midpoint
+        const mx = (ax+cx)/2, my = (ay+cy)/2;
+        const dist = Math.hypot(pC[0]-pA[0], pC[1]-pA[1]).toFixed(1);
+        ctx.fillStyle = 'rgba(250,204,21,0.85)';
+        ctx.font = '700 11px Fira Code, monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(`AC = ${dist}u`, mx, my - 8);
+        ctx.restore();
+    }
+
+    function drawFocusSegment() {
+        const p1 = state.pts[state.focusA], p2 = state.pts[state.focusB];
+        const x1 = state.originX + p1[0]*state.scale, y1 = state.originY - p1[1]*state.scale;
+        const x2 = state.originX + p2[0]*state.scale, y2 = state.originY - p2[1]*state.scale;
+
+        // Thick glowing orange dashed line
+        ctx.save();
+        ctx.lineCap = 'round';
+
+        // Glow layer
+        ctx.beginPath();
+        ctx.setLineDash([10, 6]);
+        ctx.lineWidth = 14;
+        ctx.strokeStyle = 'rgba(251,146,60,0.18)';
+        ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+        ctx.stroke();
+
+        // Core line
+        ctx.beginPath();
+        ctx.setLineDash([10, 6]);
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = '#fb923c';
+        ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Small arrowhead at p2 end (the "to" point)
+        const angle = Math.atan2(y2 - y1, x2 - x1);
+        const aw = 12;
+        ctx.beginPath();
+        ctx.moveTo(x2, y2);
+        ctx.lineTo(x2 - aw * Math.cos(angle - 0.4), y2 - aw * Math.sin(angle - 0.4));
+        ctx.lineTo(x2 - aw * Math.cos(angle + 0.4), y2 - aw * Math.sin(angle + 0.4));
+        ctx.closePath();
+        ctx.fillStyle = '#fb923c';
+        ctx.fill();
+
+        // Midpoint distance label pill
+        const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+        const lA = String.fromCharCode(65 + state.focusA);
+        const lB = String.fromCharCode(65 + state.focusB);
+        const dist = Math.hypot(p2[0]-p1[0], p2[1]-p1[1]).toFixed(2);
+        const label = `${lA}→${lB}  =  ${dist} u`;
+
+        ctx.font = '700 12px Fira Code, monospace';
+        const tw = ctx.measureText(label).width;
+        const pad = 10, ph = 22, pr = 8;
+        // perpendicular offset so pill doesn't overlap the line
+        const perp = { x: -(y2-y1), y: (x2-x1) };
+        const plen = Math.hypot(perp.x, perp.y) || 1;
+        const ox = (perp.x / plen) * 22, oy = (perp.y / plen) * 22;
+
+        ctx.fillStyle = 'rgba(251,146,60,0.92)';
+        roundRect(ctx, mx + ox - tw/2 - pad, my + oy - ph/2, tw + pad*2, ph, pr);
+        ctx.fill();
+
+        ctx.fillStyle = '#000';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(label, mx + ox, my + oy);
+
+        ctx.restore();
+    }
+
+    // Helper: draw a rounded rect path
+    function roundRect(ctx, x, y, w, h, r) {
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.lineTo(x + w - r, y);
+        ctx.arcTo(x + w, y, x + w, y + r, r);
+        ctx.lineTo(x + w, y + h - r);
+        ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+        ctx.lineTo(x + r, y + h);
+        ctx.arcTo(x, y + h, x, y + h - r, r);
+        ctx.lineTo(x, y + r);
+        ctx.arcTo(x, y, x + r, y, r);
+        ctx.closePath();
+    }
+
+    function drawInteractions() {
+        state.pts.forEach((p, i) => {
+            const sx = state.originX + p[0]*state.scale;
+            const sy = state.originY - p[1]*state.scale;
+            const isPrimary   = (i === state.focusA);
+            const isSecondary = (i === state.focusB);
+
+            const dot = document.createElement('div');
+            let cls = 'glow-point';
+            if (isPrimary)   cls += ' is-focus-primary';
+            if (isSecondary) cls += ' is-focus-secondary';
+            dot.className = cls;
+            dot.style.left = `${sx}px`;
+            dot.style.top  = `${sy}px`;
+            dot.textContent = String.fromCharCode(65 + i);
+
+            // Delete badge (×)
+            const del = document.createElement('div');
+            del.className = 'del-badge';
+            del.textContent = '×';
+            del.addEventListener('pointerdown', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                deletePoint(i);
+            });
+            dot.appendChild(del);
+
+            dot.addEventListener('pointerdown', (e) => {
+                if (e.target === del) return;
+                e.preventDefault();
+                e.stopPropagation();
+                if (state.addPointMode) { cancelAddPointMode(); return; }
+                addGhost();
+                state.draggingIdx = i;
+                // Tap a dot → it becomes new primary focus A
+                // Secondary focus B = the point 2 steps ahead (A→C pattern)
+                if (state.focusA !== i) {
+                    state.focusA = i;
+                    state.focusB = (i + 2) % state.pts.length;
+                }
+                render();
+            });
+
+            uiLayer.appendChild(dot);
+
+            // Coordinate label — offset direction varies by focus role for readability
+            const label = document.createElement('div');
+            label.className = 'label-node';
+            label.style.left = `${sx}px`;
+            label.style.top  = `${sy}px`;
+
+            // Push primary label up more so it clears the larger dot
+            const yOffset = isPrimary ? -32 : -24;
+            label.style.marginTop = `${yOffset}px`;
+
+            // Color-code the label border to match dot
+            const borderColor = isPrimary ? 'rgba(251,146,60,0.7)' : isSecondary ? 'rgba(251,191,36,0.5)' : 'rgba(255,255,255,0.2)';
+            label.innerHTML = `<div class="node-box" style="border-color:${borderColor};font-size:${isPrimary?'15px':'13px'}">${p[0].toFixed(1)}, ${p[1].toFixed(1)}</div>`;
+            uiLayer.appendChild(label);
+        });
+    }
+
+    function updateDisplayMath() {
+        const p1 = state.pts[state.focusA], p2 = state.pts[state.focusB];
+        const dist = Math.hypot(p2[0]-p1[0], p2[1]-p1[1]).toFixed(2);
+        const l1 = String.fromCharCode(65+state.focusA), l2 = String.fromCharCode(65+state.focusB);
+        katex.render(
+            `${l1}${l2} = \\sqrt{(${p2[0]}-${p1[0]})^2 + (${p2[1]}-${p1[1]})^2} = ${dist}\\,u`,
+            document.getElementById('latex-box')
+        );
+
+        // Shoelace for full polygon
+        const area = shoelaceArea(state.pts);
+        let peri = 0;
+        state.pts.forEach((p, i) => {
+            const next = state.pts[(i+1) % state.pts.length];
+            peri += Math.hypot(next[0]-p[0], next[1]-p[1]);
+        });
+
+        document.getElementById('area-val').innerText = area.toFixed(1);
+        document.getElementById('peri-val').innerText = peri.toFixed(1);
+        document.getElementById('pts-val').innerText  = state.pts.length;
+
+        // Sub-label: note if polygon is complex (self-intersecting) — basic check
+        const sub = document.getElementById('area-sub');
+        sub.textContent = state.pts.length > 4 ? `${state.pts.length}-gon · Shoelace` : '';
+    }
+
+    function getLogicPos(e) {
+        const clientX = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
+        const clientY = (e.touches && e.touches[0]) ? e.touches[0].clientY : e.clientY;
+        return {
+            x: (clientX - state.originX) / state.scale,
+            y: (state.originY - clientY) / state.scale
+        };
+    }
+
+    function handleMove(e) {
+        if (state.draggingIdx === -1) return;
+        e.preventDefault();
+        const pos = getLogicPos(e);
+        state.pts[state.draggingIdx] = [snap(pos.x), snap(pos.y)];
+        render();
+    }
+
+    function handleUp() {
+        if (state.draggingIdx !== -1) {
+            const l = String.fromCharCode(65 + state.draggingIdx);
+            addHistory("Vertex", `Align Point ${l}`, `Manual coordinate recalibration.`,
+                `P_${l} \\to (${state.pts[state.draggingIdx][0]}, ${state.pts[state.draggingIdx][1]})`);
+        }
+        state.draggingIdx = -1;
+    }
+
+    // Escape cancels add-point mode
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') cancelAddPointMode();
+    });
+
+    window.addEventListener('mousemove',   handleMove);
+    window.addEventListener('mouseup',     handleUp);
+    window.addEventListener('touchmove',   handleMove, { passive: false });
+    window.addEventListener('touchend',    handleUp);
+    window.addEventListener('pointermove', handleMove, { passive: false });
+    window.addEventListener('pointerup',   handleUp);
+
+    window.onload   = () => { updateVectorUI(); updateDilationUI(); updateTraceButtons(); render(); };
+    window.onresize = render;
+=======
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vinculum - Multiplication Array Runner</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #000; user-select: none; }
+#game-canvas { display: block; width: 100vw; height: 100vh; }
+
+#ui-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+}
+#ui-overlay > * { pointer-events: auto; }
+
+/* HUD */
+#hud {
+    position: absolute; top: 16px; left: 0; right: 0;
+    display: none; justify-content: space-between; padding: 0 24px;
+}
+.hud-item {
+    background: rgba(0,0,0,0.65); color: white;
+    padding: 8px 20px; border-radius: 24px;
+    font-size: 20px; font-weight: bold; letter-spacing: 0.5px;
+}
+#timer { color: #FFD700; font-variant-numeric: tabular-nums; }
+#streak-display { color: #FF6B6B; }
+
+/* Menu Screen */
+#menu-screen {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+#menu-screen h1 {
+    font-size: 68px; color: white;
+    text-shadow: 3px 3px 8px rgba(0,0,0,0.3);
+    margin-bottom: 6px; letter-spacing: 6px;
+}
+.subtitle { color: rgba(255,255,255,0.8); font-size: 22px; margin-bottom: 36px; }
+.btn {
+    padding: 16px 56px; font-size: 26px; font-weight: bold;
+    border: none; border-radius: 50px; cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s; margin: 8px;
+}
+.btn:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
+.btn-primary { background: #FFD700; color: #333; }
+.instructions {
+    color: rgba(255,255,255,0.65); font-size: 15px; margin-top: 24px; text-align: center; line-height: 1.6;
+}
+
+/* Question Panel */
+#question-panel {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    background: white; border-radius: 20px; padding: 36px 44px;
+    min-width: 380px; max-width: 90vw;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5); display: none; text-align: center;
+}
+#question-panel h2 { font-size: 38px; color: #333; margin-bottom: 24px; }
+.answer-btn {
+    display: block; width: 100%; padding: 14px; margin: 8px 0;
+    font-size: 24px; font-weight: bold;
+    border: 3px solid #e0e0e0; border-radius: 14px;
+    background: #fafafa; cursor: pointer; transition: all 0.15s;
+}
+.answer-btn:hover { border-color: #667eea; background: #f0f0ff; }
+.answer-btn.correct { background: #4CAF50; color: white; border-color: #4CAF50; }
+.answer-btn.wrong { background: #EF5350; color: white; border-color: #EF5350; }
+
+/* Skip Count Panel */
+#skip-panel {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    background: white; border-radius: 20px; padding: 32px 40px;
+    min-width: 420px; max-width: 90vw;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5); display: none; text-align: center;
+}
+#skip-panel h2 { font-size: 30px; color: #333; margin-bottom: 8px; }
+.skip-instruction { font-size: 18px; color: #666; margin-bottom: 16px; }
+#skip-grid { display: inline-block; margin: 12px auto; }
+.skip-row { display: flex; justify-content: center; margin: 2px 0; }
+.skip-cell {
+    width: 36px; height: 36px; margin: 2px; border-radius: 6px;
+    background: #e8e8e8; transition: background 0.3s, transform 0.2s;
+}
+.skip-cell.filled { background: #667eea; transform: scale(1.05); }
+#skip-count-display {
+    font-size: 52px; font-weight: bold; color: #667eea;
+    margin: 16px 0; transition: color 0.3s;
+}
+#skip-row-label {
+    font-size: 20px; color: #888; margin-bottom: 12px; min-height: 28px;
+}
+#skip-click-btn {
+    padding: 14px 44px; font-size: 22px; background: #667eea;
+    color: white; border: none; border-radius: 50px;
+    cursor: pointer; font-weight: bold; transition: background 0.15s;
+}
+#skip-click-btn:hover { background: #5568d6; }
+
+/* Game Over */
+#gameover-screen {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    display: none; flex-direction: column; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.85);
+}
+#gameover-screen h1 { font-size: 52px; color: #FFD700; margin-bottom: 16px; }
+.final-score { font-size: 34px; color: white; margin-bottom: 8px; }
+.stats { color: rgba(255,255,255,0.65); font-size: 18px; margin-bottom: 28px; line-height: 1.6; }
+
+/* Touch Controls */
+#touch-controls {
+    position: absolute; bottom: 30px; left: 0; right: 0;
+    display: none; justify-content: center; gap: 80px;
+}
+.touch-btn {
+    width: 70px; height: 70px; border-radius: 50%;
+    background: rgba(255,255,255,0.25); border: 3px solid rgba(255,255,255,0.4);
+    color: white; font-size: 32px; display: flex;
+    align-items: center; justify-content: center;
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.touch-btn:active { background: rgba(255,255,255,0.5); }
+
+/* Feedback flash */
+#feedback-flash {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    font-size: 48px; font-weight: bold; pointer-events: none;
+    opacity: 0; transition: opacity 0.3s;
+}
+</style>
+</head>
+<body>
+<canvas id="game-canvas"></canvas>
+<div id="ui-overlay">
+    <div id="hud">
+        <div class="hud-item" id="score-display">Score: 0</div>
+        <div class="hud-item" id="timer">3:00</div>
+        <div class="hud-item" id="streak-display">Streak: 0</div>
+    </div>
+
+    <div id="menu-screen">
+        <h1>VINCULUM</h1>
+        <p class="subtitle">Multiplication Array Runner</p>
+        <button class="btn btn-primary" id="play-btn">PLAY</button>
+        <p class="instructions">
+            Arrow keys or A/D to switch lanes<br>
+            Run into arrays and answer the multiplication!<br>
+            3-minute challenge &mdash; how high can you score?
+        </p>
+    </div>
+
+    <div id="question-panel">
+        <h2 id="question-text"></h2>
+        <div id="answer-buttons"></div>
+    </div>
+
+    <div id="skip-panel">
+        <h2 id="skip-title"></h2>
+        <p class="skip-instruction" id="skip-instruction"></p>
+        <div id="skip-grid"></div>
+        <div id="skip-row-label"></div>
+        <div id="skip-count-display">0</div>
+        <button id="skip-click-btn">+ 5</button>
+    </div>
+
+    <div id="gameover-screen">
+        <h1>TIME'S UP!</h1>
+        <div class="final-score" id="final-score"></div>
+        <div class="stats" id="final-stats"></div>
+        <button class="btn btn-primary" id="replay-btn">Play Again</button>
+    </div>
+
+    <div id="touch-controls">
+        <div class="touch-btn" id="touch-left">&larr;</div>
+        <div class="touch-btn" id="touch-right">&rarr;</div>
+    </div>
+
+    <div id="feedback-flash"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ======================== CONSTANTS ========================
+const GAME_DURATION = 180;
+const PLAYER_SPEED = 14;
+const LANE_WIDTH = 5;
+const LANES = [-LANE_WIDTH, 0, LANE_WIDTH];
+const SPAWN_DISTANCE = 130;
+const MIN_ARRAY_GAP = 22;
+const MAX_ARRAY_GAP = 35;
+const ARRAY_COLORS = [
+    '#FF6B6B','#4ECDC4','#45B7D1','#96CEB4',
+    '#FFEAA7','#DDA0DD','#98D8C8','#F7DC6F',
+    '#FF9FF3','#74b9ff','#a29bfe','#fd79a8'
+];
+
+// ======================== STATE ========================
+let gameState = 'MENU';
+let score = 0;
+let streak = 0;
+let bestStreak = 0;
+let timeRemaining = GAME_DURATION;
+let correctCount = 0;
+let wrongCount = 0;
+let currentArrayObj = null;
+let skipState = null;
+let playerZ = 0;
+let playerLane = 1;
+let targetX = 0;
+let nextSpawnZ = 30;
+
+// Three.js
+let scene, camera, renderer, clock;
+let player, playerBody, playerHead;
+let obstacles = [];
+let sceneryItems = [];
+let groundTiles = [];
+
+// Input
+let keys = {};
+let isMobile = false;
+
+// ======================== INIT ========================
+function init() {
+    isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (isMobile) {
+        document.getElementById('touch-controls').style.display = 'flex';
+    }
+
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x87CEEB);
+    scene.fog = new THREE.FogExp2(0x87CEEB, 0.008);
+
+    camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 250);
+
+    const canvas = document.getElementById('game-canvas');
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    // Lights
+    const ambient = new THREE.AmbientLight(0xffffff, 0.55);
+    scene.add(ambient);
+
+    const sun = new THREE.DirectionalLight(0xfff5e0, 0.85);
+    sun.position.set(20, 30, 20);
+    sun.castShadow = true;
+    sun.shadow.mapSize.width = 1024;
+    sun.shadow.mapSize.height = 1024;
+    sun.shadow.camera.near = 0.5;
+    sun.shadow.camera.far = 80;
+    sun.shadow.camera.left = -30;
+    sun.shadow.camera.right = 30;
+    sun.shadow.camera.top = 30;
+    sun.shadow.camera.bottom = -30;
+    scene.add(sun);
+
+    const hemi = new THREE.HemisphereLight(0x87CEEB, 0x4CAF50, 0.3);
+    scene.add(hemi);
+
+    // Ground tiles (recycled as player moves)
+    const grassMat = new THREE.MeshLambertMaterial({ color: 0x5cb85c });
+    for (let i = 0; i < 5; i++) {
+        const tile = new THREE.Mesh(new THREE.PlaneGeometry(120, 120), grassMat);
+        tile.rotation.x = -Math.PI / 2;
+        tile.position.set(0, -0.01, i * 120 - 120);
+        tile.receiveShadow = true;
+        scene.add(tile);
+        groundTiles.push(tile);
+    }
+
+    // Road
+    const roadMat = new THREE.MeshLambertMaterial({ color: 0x8d6e4e });
+    for (let i = 0; i < 5; i++) {
+        const road = new THREE.Mesh(new THREE.PlaneGeometry(18, 120), roadMat);
+        road.rotation.x = -Math.PI / 2;
+        road.position.set(0, 0.01, i * 120 - 120);
+        road.receiveShadow = true;
+        scene.add(road);
+        groundTiles.push(road);
+    }
+
+    // Lane dividers
+    const lineMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.2 });
+    for (let lane = -1; lane <= 1; lane++) {
+        for (let i = 0; i < 5; i++) {
+            const line = new THREE.Mesh(new THREE.PlaneGeometry(0.12, 120), lineMat);
+            line.rotation.x = -Math.PI / 2;
+            line.position.set(lane * LANE_WIDTH, 0.02, i * 120 - 120);
+            scene.add(line);
+            groundTiles.push(line);
+        }
+    }
+
+    // Scenery
+    for (let z = -20; z < 200; z += 6 + Math.random() * 6) {
+        createTree(z);
+    }
+
+    // Create player
+    createPlayer();
+
+    clock = new THREE.Clock();
+
+    // Input handlers — LEFT arrow moves left, RIGHT arrow moves right
+    window.addEventListener('keydown', e => {
+        if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+            e.preventDefault();
+            if (gameState === 'PLAYING' && playerLane < 2) {
+                playerLane++;
+                targetX = LANES[playerLane];
+            }
+        }
+        if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+            e.preventDefault();
+            if (gameState === 'PLAYING' && playerLane > 0) {
+                playerLane--;
+                targetX = LANES[playerLane];
+            }
+        }
+        keys[e.key] = true;
+    });
+    window.addEventListener('keyup', e => { keys[e.key] = false; });
+    window.addEventListener('resize', onResize);
+
+    // Touch swipe
+    let touchStartX = 0;
+    canvas.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    canvas.addEventListener('touchend', e => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        if (gameState === 'PLAYING') {
+            if (dx > 40 && playerLane > 0) { playerLane--; targetX = LANES[playerLane]; }
+            else if (dx < -40 && playerLane < 2) { playerLane++; targetX = LANES[playerLane]; }
+        }
+    }, { passive: true });
+
+    // Touch buttons
+    document.getElementById('touch-left').addEventListener('touchstart', e => {
+        e.preventDefault();
+        if (gameState === 'PLAYING' && playerLane < 2) { playerLane++; targetX = LANES[playerLane]; }
+    });
+    document.getElementById('touch-right').addEventListener('touchstart', e => {
+        e.preventDefault();
+        if (gameState === 'PLAYING' && playerLane > 0) { playerLane--; targetX = LANES[playerLane]; }
+    });
+
+    // Button handlers
+    document.getElementById('play-btn').addEventListener('click', startGame);
+    document.getElementById('replay-btn').addEventListener('click', startGame);
+    document.getElementById('skip-click-btn').addEventListener('click', skipCountClick);
+
+    animate();
+}
+
+// ======================== PLAYER ========================
+function createPlayer() {
+    player = new THREE.Group();
+
+    // Body (cylinder instead of capsule for r128 compat)
+    const bodyGeo = new THREE.CylinderGeometry(0.45, 0.5, 1.4, 12);
+    const bodyMat = new THREE.MeshLambertMaterial({ color: 0x667eea });
+    playerBody = new THREE.Mesh(bodyGeo, bodyMat);
+    playerBody.position.y = 1.4;
+    playerBody.castShadow = true;
+    player.add(playerBody);
+
+    // Head
+    const headGeo = new THREE.SphereGeometry(0.38, 14, 14);
+    const headMat = new THREE.MeshLambertMaterial({ color: 0xFFDBB5 });
+    playerHead = new THREE.Mesh(headGeo, headMat);
+    playerHead.position.y = 2.6;
+    playerHead.castShadow = true;
+    player.add(playerHead);
+
+    // Eyes
+    const eyeGeo = new THREE.SphereGeometry(0.07, 8, 8);
+    const eyeMat = new THREE.MeshBasicMaterial({ color: 0x222222 });
+    [-0.14, 0.14].forEach(x => {
+        const eye = new THREE.Mesh(eyeGeo, eyeMat);
+        eye.position.set(x, 2.68, 0.33);
+        player.add(eye);
+    });
+
+    // Arms (small cylinders)
+    const armGeo = new THREE.CylinderGeometry(0.12, 0.1, 0.7, 8);
+    const armMat = new THREE.MeshLambertMaterial({ color: 0x5568d6 });
+    [-0.6, 0.6].forEach((x, i) => {
+        const arm = new THREE.Mesh(armGeo, armMat);
+        arm.position.set(x, 1.3, 0);
+        arm.rotation.z = x > 0 ? -0.3 : 0.3;
+        arm.userData = { type: 'arm', side: i };
+        player.add(arm);
+    });
+
+    // Legs
+    const legGeo = new THREE.CylinderGeometry(0.14, 0.12, 0.8, 8);
+    const legMat = new THREE.MeshLambertMaterial({ color: 0x444466 });
+    [-0.2, 0.2].forEach((x, i) => {
+        const leg = new THREE.Mesh(legGeo, legMat);
+        leg.position.set(x, 0.4, 0);
+        leg.userData = { type: 'leg', side: i };
+        player.add(leg);
+    });
+
+    scene.add(player);
+}
+
+// ======================== SCENERY ========================
+function createTree(z) {
+    const side = Math.random() > 0.5 ? 1 : -1;
+    const x = side * (12 + Math.random() * 25);
+    const tree = new THREE.Group();
+
+    const trunkH = 2 + Math.random() * 2;
+    const trunk = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.2, 0.4, trunkH, 6),
+        new THREE.MeshLambertMaterial({ color: 0x8B4513 })
+    );
+    trunk.position.y = trunkH / 2;
+    tree.add(trunk);
+
+    const foliageR = 1.5 + Math.random() * 1.5;
+    const foliage = new THREE.Mesh(
+        new THREE.SphereGeometry(foliageR, 8, 6),
+        new THREE.MeshLambertMaterial({ color: new THREE.Color().setHSL(0.28 + Math.random() * 0.08, 0.6, 0.35) })
+    );
+    foliage.position.y = trunkH + foliageR * 0.7;
+    foliage.scale.y = 1.2;
+    tree.add(foliage);
+
+    tree.position.set(x, 0, z);
+    scene.add(tree);
+    sceneryItems.push(tree);
+}
+
+// ======================== ARRAY OBSTACLES ========================
+function drawRoundedRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+}
+
+function createArrayTexture(rows, cols) {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const size = 512;
+    canvas.width = size;
+    canvas.height = size;
+
+    // Background
+    ctx.fillStyle = 'rgba(255,255,255,0.95)';
+    drawRoundedRect(ctx, 0, 0, size, size, 16);
+    ctx.fill();
+
+    // Border
+    ctx.strokeStyle = '#555';
+    ctx.lineWidth = 4;
+    drawRoundedRect(ctx, 3, 3, size - 6, size - 6, 14);
+    ctx.stroke();
+
+    // Label at top
+    ctx.fillStyle = '#333';
+    ctx.font = 'bold 36px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText(rows + ' \u00D7 ' + cols, size / 2, 10);
+
+    // Grid
+    const topPad = 56;
+    const pad = 20;
+    const availW = size - pad * 2;
+    const availH = size - topPad - pad;
+    const cellSize = Math.min(availW / cols, availH / rows) - 3;
+    const gridW = cols * (cellSize + 3);
+    const gridH = rows * (cellSize + 3);
+    const startX = (size - gridW) / 2;
+    const startY = topPad + (availH - gridH) / 2;
+
+    for (let r = 0; r < rows; r++) {
+        const color = ARRAY_COLORS[r % ARRAY_COLORS.length];
+        for (let c = 0; c < cols; c++) {
+            const cx = startX + c * (cellSize + 3);
+            const cy = startY + r * (cellSize + 3);
+            ctx.fillStyle = color;
+            drawRoundedRect(ctx, cx, cy, cellSize, cellSize, 4);
+            ctx.fill();
+        }
+    }
+
+    return canvas;
+}
+
+function spawnArrayObstacle(z) {
+    const a = Math.floor(Math.random() * 11) + 2;
+    const b = Math.floor(Math.random() * 11) + 2;
+    const rows = Math.min(a, b);
+    const cols = Math.max(a, b);
+
+    const texCanvas = createArrayTexture(rows, cols);
+    const texture = new THREE.CanvasTexture(texCanvas);
+
+    const panelH = 5.5;
+    const panelW = panelH;
+
+    const geo = new THREE.BoxGeometry(panelW, panelH, 0.12);
+    const frontMat = new THREE.MeshLambertMaterial({ map: texture });
+    const edgeMat = new THREE.MeshLambertMaterial({ color: 0x667eea });
+    const materials = [edgeMat, edgeMat, edgeMat, edgeMat, frontMat, frontMat];
+    const mesh = new THREE.Mesh(geo, materials);
+
+    const lane = Math.floor(Math.random() * 3);
+    const x = LANES[lane];
+
+    // Random tilt for "approach angle" effect
+    const rotY = (Math.random() - 0.5) * 0.7;
+
+    mesh.position.set(x, panelH / 2 + 0.8, z);
+    mesh.rotation.y = rotY;
+    mesh.castShadow = true;
+
+    mesh.userData = {
+        rows, cols, product: rows * cols,
+        lane, baseY: mesh.position.y,
+        time: Math.random() * 100, rotY
+    };
+
+    // Glow edge
+    const glowGeo = new THREE.BoxGeometry(panelW + 0.3, panelH + 0.3, 0.05);
+    const glowMat = new THREE.MeshBasicMaterial({ color: 0x667eea, transparent: true, opacity: 0.15 });
+    const glow = new THREE.Mesh(glowGeo, glowMat);
+    glow.position.z = -0.1;
+    mesh.add(glow);
+
+    scene.add(mesh);
+    obstacles.push(mesh);
+}
+
+// ======================== GAME FLOW ========================
+function startGame() {
+    gameState = 'PLAYING';
+    score = 0;
+    streak = 0;
+    bestStreak = 0;
+    correctCount = 0;
+    wrongCount = 0;
+    timeRemaining = GAME_DURATION;
+    playerZ = 0;
+    playerLane = 1;
+    targetX = LANES[1];
+    nextSpawnZ = 30;
+
+    obstacles.forEach(o => scene.remove(o));
+    obstacles = [];
+
+    for (let z = 30; z < SPAWN_DISTANCE; z += MIN_ARRAY_GAP + Math.random() * (MAX_ARRAY_GAP - MIN_ARRAY_GAP)) {
+        spawnArrayObstacle(z);
+        nextSpawnZ = z + MIN_ARRAY_GAP + Math.random() * (MAX_ARRAY_GAP - MIN_ARRAY_GAP);
+    }
+
+    document.getElementById('menu-screen').style.display = 'none';
+    document.getElementById('gameover-screen').style.display = 'none';
+    document.getElementById('question-panel').style.display = 'none';
+    document.getElementById('skip-panel').style.display = 'none';
+    document.getElementById('hud').style.display = 'flex';
+    if (isMobile) document.getElementById('touch-controls').style.display = 'flex';
+
+    updateHUD();
+}
+
+function update(delta) {
+    if (gameState === 'PLAYING') {
+        playerZ += PLAYER_SPEED * delta;
+
+        // Smooth lane switch
+        player.position.x += (targetX - player.position.x) * 10 * delta;
+        player.position.z = playerZ;
+
+        // Running animation
+        const runCycle = playerZ * 3;
+        const bounce = Math.abs(Math.sin(runCycle)) * 0.25;
+        player.position.y = bounce;
+
+        // Arm and leg swing
+        player.children.forEach(child => {
+            if (child.userData && child.userData.type === 'arm') {
+                child.rotation.x = Math.sin(runCycle + child.userData.side * Math.PI) * 0.5;
+            } else if (child.userData && child.userData.type === 'leg') {
+                child.rotation.x = Math.sin(runCycle + child.userData.side * Math.PI) * 0.6;
+            }
+        });
+
+        // Camera
+        camera.position.set(
+            player.position.x * 0.3,
+            5.5 + Math.sin(runCycle * 0.3) * 0.15,
+            playerZ - 9
+        );
+        camera.lookAt(player.position.x * 0.4, 2.5, playerZ + 18);
+
+        // Sunlight follows
+        const sunLight = scene.children.find(c => c.isDirectionalLight);
+        if (sunLight) {
+            sunLight.position.set(playerZ + 20, 30, playerZ + 20);
+            sunLight.target.position.set(0, 0, playerZ);
+            sunLight.target.updateMatrixWorld();
+        }
+
+        // Recycle ground tiles
+        groundTiles.forEach(tile => {
+            while (tile.position.z < playerZ - 120) {
+                tile.position.z += 120 * 5;
+            }
+        });
+
+        // Recycle trees
+        sceneryItems.forEach(tree => {
+            if (tree.position.z < playerZ - 40) {
+                tree.position.z += 240;
+            }
+        });
+
+        // Update obstacles
+        for (let i = obstacles.length - 1; i >= 0; i--) {
+            const arr = obstacles[i];
+            arr.userData.time += delta;
+
+            // Float bob
+            arr.position.y = arr.userData.baseY + Math.sin(arr.userData.time * 1.8) * 0.35;
+            // Gentle wobble
+            arr.rotation.y = arr.userData.rotY + Math.sin(arr.userData.time * 0.7) * 0.08;
+
+            // Collision check
+            const dz = arr.position.z - playerZ;
+            const dx = Math.abs(arr.position.x - player.position.x);
+
+            if (dz < 2 && dz > -1.5 && dx < 2.8) {
+                currentArrayObj = arr;
+                showQuestion(arr.userData.rows, arr.userData.cols, arr.userData.product);
+                gameState = 'QUESTION';
+                break;
+            }
+
+            // Clean up far behind
+            if (arr.position.z < playerZ - 15) {
+                scene.remove(arr);
+                obstacles.splice(i, 1);
+            }
+        }
+
+        // Spawn new arrays
+        while (nextSpawnZ < playerZ + SPAWN_DISTANCE) {
+            spawnArrayObstacle(nextSpawnZ);
+            nextSpawnZ += MIN_ARRAY_GAP + Math.random() * (MAX_ARRAY_GAP - MIN_ARRAY_GAP);
+        }
+
+        // Timer
+        timeRemaining -= delta;
+        if (timeRemaining <= 0) {
+            timeRemaining = 0;
+            endGame();
+        }
+
+        updateHUD();
+    }
+
+    // During question/skip: keep timer running + gentle camera drift
+    if (gameState === 'QUESTION' || gameState === 'SKIP_COUNT') {
+        // Timer keeps counting (true 3-minute game)
+        timeRemaining -= delta;
+        if (timeRemaining <= 0) {
+            timeRemaining = 0;
+            document.getElementById('question-panel').style.display = 'none';
+            document.getElementById('skip-panel').style.display = 'none';
+            removeCurrentArray();
+            skipState = null;
+            endGame();
+        }
+        updateHUD();
+
+        const t = clock.getElapsedTime();
+        camera.position.x = player.position.x * 0.3 + Math.sin(t * 0.4) * 0.4;
+        camera.position.y = 5.5 + Math.sin(t * 0.3) * 0.2;
+
+        // Keep obstacles floating
+        obstacles.forEach(arr => {
+            arr.userData.time += delta;
+            arr.position.y = arr.userData.baseY + Math.sin(arr.userData.time * 1.8) * 0.35;
+        });
+    }
+}
+
+// ======================== QUESTION SYSTEM ========================
+function showQuestion(rows, cols, product) {
+    const panel = document.getElementById('question-panel');
+    document.getElementById('question-text').textContent = rows + ' \u00D7 ' + cols + ' = ?';
+
+    // Generate plausible wrong answers
+    const wrongSet = new Set();
+    const strategies = [
+        () => product + Math.floor(Math.random() * 6) + 1,
+        () => product - Math.floor(Math.random() * 6) - 1,
+        () => rows * (cols + 1),
+        () => rows * (cols - 1),
+        () => (rows + 1) * cols,
+        () => (rows - 1) * cols,
+        () => product + cols,
+        () => product - rows,
+    ];
+
+    let attempts = 0;
+    while (wrongSet.size < 3 && attempts < 50) {
+        const fn = strategies[Math.floor(Math.random() * strategies.length)];
+        const val = fn();
+        if (val > 0 && val !== product && !wrongSet.has(val)) {
+            wrongSet.add(val);
+        }
+        attempts++;
+    }
+    while (wrongSet.size < 3) {
+        const val = product + wrongSet.size + 1;
+        if (val !== product) wrongSet.add(val);
+    }
+
+    const answers = [product, ...wrongSet];
+    for (let i = answers.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [answers[i], answers[j]] = [answers[j], answers[i]];
+    }
+
+    const container = document.getElementById('answer-buttons');
+    container.innerHTML = '';
+    answers.forEach(ans => {
+        const btn = document.createElement('button');
+        btn.className = 'answer-btn';
+        btn.textContent = ans;
+        btn.addEventListener('click', () => handleAnswer(ans, product, rows, cols, btn));
+        container.appendChild(btn);
+    });
+
+    panel.style.display = 'block';
+}
+
+function handleAnswer(answer, correct, rows, cols, clickedBtn) {
+    const buttons = document.querySelectorAll('.answer-btn');
+    buttons.forEach(b => { b.style.pointerEvents = 'none'; });
+
+    if (answer === correct) {
+        clickedBtn.classList.add('correct');
+        streak++;
+        if (streak > bestStreak) bestStreak = streak;
+        const points = 10 + Math.min(streak, 10) * 2;
+        score += points;
+        correctCount++;
+
+        showFeedback('+' + points, '#4CAF50');
+
+        setTimeout(() => {
+            removeCurrentArray();
+            document.getElementById('question-panel').style.display = 'none';
+            gameState = 'PLAYING';
+            updateHUD();
+        }, 700);
+    } else {
+        clickedBtn.classList.add('wrong');
+        buttons.forEach(b => {
+            if (parseInt(b.textContent) === correct) b.classList.add('correct');
+        });
+        streak = 0;
+        wrongCount++;
+
+        showFeedback('Skip count!', '#EF5350');
+
+        setTimeout(() => {
+            document.getElementById('question-panel').style.display = 'none';
+            startSkipCount(rows, cols);
+        }, 1200);
+    }
+}
+
+// ======================== SKIP COUNTING ========================
+function startSkipCount(rows, cols) {
+    gameState = 'SKIP_COUNT';
+    skipState = { rows, cols, currentRow: 0, total: 0 };
+
+    document.getElementById('skip-title').textContent = rows + ' \u00D7 ' + cols;
+    document.getElementById('skip-instruction').textContent =
+        'Skip count by ' + cols + '! Tap the button to build each row.';
+    document.getElementById('skip-count-display').textContent = '0';
+    document.getElementById('skip-count-display').style.color = '#667eea';
+    document.getElementById('skip-row-label').textContent = '';
+
+    const grid = document.getElementById('skip-grid');
+    grid.innerHTML = '';
+
+    const maxVisualCols = Math.min(cols, 12);
+    const maxVisualRows = Math.min(rows, 12);
+
+    for (let r = 0; r < maxVisualRows; r++) {
+        const rowDiv = document.createElement('div');
+        rowDiv.className = 'skip-row';
+        rowDiv.id = 'skip-row-' + r;
+        for (let c = 0; c < maxVisualCols; c++) {
+            const cell = document.createElement('div');
+            cell.className = 'skip-cell';
+            if (maxVisualCols > 8) {
+                cell.style.width = '28px';
+                cell.style.height = '28px';
+            }
+            rowDiv.appendChild(cell);
+        }
+        grid.appendChild(rowDiv);
+    }
+
+    document.getElementById('skip-click-btn').textContent = '+ ' + cols;
+    document.getElementById('skip-click-btn').style.display = 'inline-block';
+    document.getElementById('skip-panel').style.display = 'block';
+}
+
+function skipCountClick() {
+    if (!skipState || gameState !== 'SKIP_COUNT') return;
+
+    const { rows, cols, currentRow } = skipState;
+    if (currentRow >= rows) return;
+
+    // Fill from bottom up: first click fills bottom row, then next row up, etc.
+    const maxVisualRows = Math.min(rows, 12);
+    const visualRow = maxVisualRows - 1 - currentRow;
+    if (visualRow >= 0 && visualRow < maxVisualRows) {
+        const rowDiv = document.getElementById('skip-row-' + visualRow);
+        if (rowDiv) {
+            const cells = rowDiv.querySelectorAll('.skip-cell');
+            cells.forEach((cell, idx) => {
+                setTimeout(() => cell.classList.add('filled'), idx * 30);
+            });
+        }
+    }
+
+    skipState.currentRow++;
+    skipState.total += cols;
+
+    document.getElementById('skip-count-display').textContent = skipState.total;
+    document.getElementById('skip-row-label').textContent =
+        'Row ' + skipState.currentRow + ': ' + skipState.currentRow + ' \u00D7 ' + cols + ' = ' + skipState.total;
+
+    if (skipState.currentRow >= rows) {
+        document.getElementById('skip-click-btn').style.display = 'none';
+        document.getElementById('skip-instruction').textContent =
+            rows + ' \u00D7 ' + cols + ' = ' + skipState.total + '!';
+        document.getElementById('skip-count-display').style.color = '#4CAF50';
+        document.getElementById('skip-row-label').textContent = 'Great job! You built the whole array!';
+
+        score += 5;
+
+        setTimeout(() => {
+            document.getElementById('skip-panel').style.display = 'none';
+            removeCurrentArray();
+            gameState = 'PLAYING';
+            skipState = null;
+            updateHUD();
+        }, 1800);
+    }
+}
+
+// ======================== UTILITIES ========================
+function removeCurrentArray() {
+    if (currentArrayObj) {
+        const idx = obstacles.indexOf(currentArrayObj);
+        if (idx > -1) {
+            scene.remove(currentArrayObj);
+            obstacles.splice(idx, 1);
+        }
+        currentArrayObj = null;
+    }
+}
+
+function showFeedback(text, color) {
+    const el = document.getElementById('feedback-flash');
+    el.textContent = text;
+    el.style.color = color;
+    el.style.opacity = '1';
+    setTimeout(() => { el.style.opacity = '0'; }, 1200);
+}
+
+function endGame() {
+    gameState = 'GAME_OVER';
+    document.getElementById('hud').style.display = 'none';
+    document.getElementById('question-panel').style.display = 'none';
+    document.getElementById('skip-panel').style.display = 'none';
+    if (isMobile) document.getElementById('touch-controls').style.display = 'none';
+
+    const total = correctCount + wrongCount;
+    const accuracy = total > 0 ? Math.round(correctCount / total * 100) : 0;
+
+    document.getElementById('final-score').textContent = 'Final Score: ' + score;
+    document.getElementById('final-stats').innerHTML =
+        'Correct: ' + correctCount + ' &nbsp;|&nbsp; Wrong: ' + wrongCount +
+        ' &nbsp;|&nbsp; Accuracy: ' + accuracy + '%<br>' +
+        'Best Streak: ' + bestStreak;
+
+    document.getElementById('gameover-screen').style.display = 'flex';
+}
+
+function updateHUD() {
+    document.getElementById('score-display').textContent = 'Score: ' + score;
+    document.getElementById('streak-display').textContent = 'Streak: ' + streak;
+
+    const mins = Math.floor(timeRemaining / 60);
+    const secs = Math.floor(timeRemaining % 60);
+    const timerEl = document.getElementById('timer');
+    timerEl.textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
+    timerEl.style.color = timeRemaining < 30 ? '#FF4444' : '#FFD700';
+}
+
+function onResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+// ======================== RENDER LOOP ========================
+function animate() {
+    requestAnimationFrame(animate);
+    const delta = Math.min(clock.getDelta(), 0.05);
+    update(delta);
+    renderer.render(scene, camera);
+}
+
+// ======================== START ========================
+init();
+>>>>>>> 38db780 (Initial commit)
+</script>
+</body>
+</html>
