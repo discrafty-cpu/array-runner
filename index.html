@@ -86,7 +86,7 @@ body { overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-
     </div>
     <div id="feedback-flash"></div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://unpkg.com/three@0.150.0/build/three.min.js"></script>
 <script>
 const GAME_DURATION=180,PLAYER_SPEED=14,LANE_WIDTH=5,LANES=[-LANE_WIDTH,0,LANE_WIDTH],SPAWN_DISTANCE=130,MIN_ARRAY_GAP=22,MAX_ARRAY_GAP=35;
 const ARRAY_COLORS=['#FF6B6B','#4ECDC4','#45B7D1','#96CEB4','#FFEAA7','#DDA0DD','#98D8C8','#F7DC6F','#FF9FF3','#74b9ff','#a29bfe','#fd79a8'];
@@ -157,16 +157,90 @@ function init(){
 
 function createPlayer(){
     player=new THREE.Group();
-    const body=new THREE.Mesh(new THREE.CylinderGeometry(0.45,0.5,1.4,12),new THREE.MeshLambertMaterial({color:0x667eea}));
+    const maroon=0x800020,grey=0x666666,darkGrey=0x444444,gold=0xCCAA00;
+
+    // Body - maroon tunic/armor
+    const body=new THREE.Mesh(new THREE.CylinderGeometry(0.45,0.55,1.4,12),new THREE.MeshLambertMaterial({color:maroon}));
     body.position.y=1.4;body.castShadow=true;player.add(body);
-    const head=new THREE.Mesh(new THREE.SphereGeometry(0.38,14,14),new THREE.MeshLambertMaterial({color:0xFFDBB5}));
-    head.position.y=2.6;head.castShadow=true;player.add(head);
-    const eyeG=new THREE.SphereGeometry(0.07,8,8),eyeM=new THREE.MeshBasicMaterial({color:0x222222});
-    [-0.14,0.14].forEach(x=>{const e=new THREE.Mesh(eyeG,eyeM);e.position.set(x,2.68,0.33);player.add(e);});
-    const armG=new THREE.CylinderGeometry(0.12,0.1,0.7,8),armM=new THREE.MeshLambertMaterial({color:0x5568d6});
-    [-0.6,0.6].forEach((x,i)=>{const a=new THREE.Mesh(armG,armM);a.position.set(x,1.3,0);a.rotation.z=x>0?-0.3:0.3;a.userData={type:'arm',side:i};player.add(a);});
-    const legG=new THREE.CylinderGeometry(0.14,0.12,0.8,8),legM=new THREE.MeshLambertMaterial({color:0x444466});
+    // Belt
+    const belt=new THREE.Mesh(new THREE.CylinderGeometry(0.56,0.56,0.12,12),new THREE.MeshLambertMaterial({color:gold}));
+    belt.position.y=0.85;player.add(belt);
+
+    // Head - skin tone
+    const head=new THREE.Mesh(new THREE.SphereGeometry(0.35,14,14),new THREE.MeshLambertMaterial({color:0xFFDBB5}));
+    head.position.y=2.55;head.castShadow=true;player.add(head);
+    // Eyes
+    const eyeG=new THREE.SphereGeometry(0.06,8,8),eyeM=new THREE.MeshBasicMaterial({color:0x222222});
+    [-0.12,0.12].forEach(x=>{const e=new THREE.Mesh(eyeG,eyeM);e.position.set(x,2.6,0.3);player.add(e);});
+
+    // Spartan Helmet - grey base
+    const helmet=new THREE.Mesh(new THREE.SphereGeometry(0.44,14,14),new THREE.MeshLambertMaterial({color:grey}));
+    helmet.position.y=2.7;helmet.scale.set(1,0.9,1.1);helmet.castShadow=true;player.add(helmet);
+    // Helmet crest/plume - tall maroon mohawk
+    const plume=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.5,0.8),new THREE.MeshLambertMaterial({color:maroon}));
+    plume.position.set(0,3.15,0);player.add(plume);
+    // Plume top rounded
+    const plumeTop=new THREE.Mesh(new THREE.SphereGeometry(0.12,8,8),new THREE.MeshLambertMaterial({color:maroon}));
+    plumeTop.position.set(0,3.4,0);plumeTop.scale.set(0.8,0.6,1.5);player.add(plumeTop);
+    // Cheek guards
+    const cheekMat=new THREE.MeshLambertMaterial({color:grey});
+    [-0.28,0.28].forEach(x=>{
+        const guard=new THREE.Mesh(new THREE.BoxGeometry(0.08,0.35,0.25),cheekMat);
+        guard.position.set(x,2.4,0.15);player.add(guard);
+    });
+    // Nose guard
+    const noseGuard=new THREE.Mesh(new THREE.BoxGeometry(0.06,0.4,0.06),new THREE.MeshLambertMaterial({color:grey}));
+    noseGuard.position.set(0,2.5,0.42);player.add(noseGuard);
+
+    // LEFT ARM - holds shield
+    const armL=new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.1,0.7,8),new THREE.MeshLambertMaterial({color:0xFFDBB5}));
+    armL.position.set(-0.6,1.3,0);armL.rotation.z=0.3;armL.userData={type:'arm',side:0};player.add(armL);
+    // Shield - round, grey with maroon emblem
+    const shield=new THREE.Mesh(new THREE.CylinderGeometry(0.6,0.6,0.08,16),new THREE.MeshLambertMaterial({color:grey}));
+    shield.position.set(-0.9,1.2,0.15);shield.rotation.x=Math.PI/2;shield.rotation.z=0.2;shield.castShadow=true;player.add(shield);
+    // Shield rim - gold
+    const rim=new THREE.Mesh(new THREE.TorusGeometry(0.58,0.04,8,16),new THREE.MeshLambertMaterial({color:gold}));
+    rim.position.set(-0.9,1.2,0.19);rim.castShadow=true;player.add(rim);
+    // Shield emblem - maroon circle
+    const emblem=new THREE.Mesh(new THREE.CylinderGeometry(0.25,0.25,0.09,12),new THREE.MeshLambertMaterial({color:maroon}));
+    emblem.position.set(-0.9,1.2,0.19);emblem.rotation.x=Math.PI/2;player.add(emblem);
+
+    // RIGHT ARM - holds pencil
+    const armR=new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.1,0.7,8),new THREE.MeshLambertMaterial({color:0xFFDBB5}));
+    armR.position.set(0.6,1.3,0);armR.rotation.z=-0.3;armR.userData={type:'arm',side:1};player.add(armR);
+    // Pencil - yellow body with pink eraser and dark tip
+    const pencilGroup=new THREE.Group();
+    // Yellow shaft
+    const shaft=new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,1.2,6),new THREE.MeshLambertMaterial({color:0xFFD700}));
+    pencilGroup.add(shaft);
+    // Metal band (silver ferrule)
+    const ferrule=new THREE.Mesh(new THREE.CylinderGeometry(0.065,0.065,0.1,6),new THREE.MeshLambertMaterial({color:0xCCCCCC}));
+    ferrule.position.y=0.55;pencilGroup.add(ferrule);
+    // Pink eraser
+    const eraser=new THREE.Mesh(new THREE.CylinderGeometry(0.055,0.055,0.12,6),new THREE.MeshLambertMaterial({color:0xFF9999}));
+    eraser.position.y=0.66;pencilGroup.add(eraser);
+    // Sharpened tip - cone
+    const tip=new THREE.Mesh(new THREE.ConeGeometry(0.06,0.2,6),new THREE.MeshLambertMaterial({color:0xFFD700}));
+    tip.position.y=-0.7;pencilGroup.add(tip);
+    // Graphite point
+    const graphite=new THREE.Mesh(new THREE.ConeGeometry(0.025,0.1,6),new THREE.MeshLambertMaterial({color:0x333333}));
+    graphite.position.y=-0.82;pencilGroup.add(graphite);
+    // Position pencil in right hand, angled forward like a spear
+    pencilGroup.position.set(0.75,1.5,0.3);
+    pencilGroup.rotation.x=-0.4;
+    pencilGroup.rotation.z=-0.15;
+    player.add(pencilGroup);
+
+    // Legs - maroon greaves/sandals
+    const legG=new THREE.CylinderGeometry(0.14,0.12,0.8,8),legM=new THREE.MeshLambertMaterial({color:darkGrey});
     [-0.2,0.2].forEach((x,i)=>{const l=new THREE.Mesh(legG,legM);l.position.set(x,0.4,0);l.userData={type:'leg',side:i};player.add(l);});
+    // Shin guards
+    const shinMat=new THREE.MeshLambertMaterial({color:grey});
+    [-0.2,0.2].forEach(x=>{
+        const shin=new THREE.Mesh(new THREE.BoxGeometry(0.12,0.4,0.08),shinMat);
+        shin.position.set(x,0.35,0.12);player.add(shin);
+    });
+
     scene.add(player);
 }
 
