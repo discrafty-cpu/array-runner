@@ -173,8 +173,8 @@ function createPlayer(){
 function createTree(z){
     const side=Math.random()>0.5?1:-1,x=side*(12+Math.random()*25),tree=new THREE.Group();
     const tH=2+Math.random()*2;
-    tree.add(Object.assign(new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.4,tH,6),new THREE.MeshLambertMaterial({color:0x8B4513})),{position:{x:0,y:tH/2,z:0}}));
-    const tr=tree.children[0];tr.position.y=tH/2;
+    const trunk=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.4,tH,6),new THREE.MeshLambertMaterial({color:0x8B4513}));
+    trunk.position.y=tH/2;tree.add(trunk);
     const fR=1.5+Math.random()*1.5;
     const f=new THREE.Mesh(new THREE.SphereGeometry(fR,8,6),new THREE.MeshLambertMaterial({color:new THREE.Color().setHSL(0.28+Math.random()*0.08,0.6,0.35)}));
     f.position.y=tH+fR*0.7;f.scale.y=1.2;tree.add(f);
