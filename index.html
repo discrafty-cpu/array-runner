@@ -163,11 +163,11 @@ function createPlayer(){
     const body=new THREE.Mesh(new THREE.CylinderGeometry(0.45,0.55,1.4,12),new THREE.MeshLambertMaterial({color:maroon}));
     body.position.y=1.4;body.castShadow=true;player.add(body);
     // Belt
-    const belt=new THREE.Mesh(new THREE.CylinderGeometry(0.56,0.56,0.12,12),new THREE.MeshLambertMaterial({color:gold}));
+    const belt=new THREE.Mesh(new THREE.CylinderGeometry(0.56,0.56,0.12,12),new THREE.MeshLambertMaterial({color:grey}));
     belt.position.y=0.85;player.add(belt);
 
     // Head - skin tone
-    const head=new THREE.Mesh(new THREE.SphereGeometry(0.35,14,14),new THREE.MeshLambertMaterial({color:0xFFDBB5}));
+    const head=new THREE.Mesh(new THREE.SphereGeometry(0.35,14,14),new THREE.MeshLambertMaterial({color:0x8D5524}));
     head.position.y=2.55;head.castShadow=true;player.add(head);
     // Eyes
     const eyeG=new THREE.SphereGeometry(0.06,8,8),eyeM=new THREE.MeshBasicMaterial({color:0x222222});
@@ -193,7 +193,7 @@ function createPlayer(){
     noseGuard.position.set(0,2.5,0.42);player.add(noseGuard);
 
     // LEFT ARM - holds shield
-    const armL=new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.1,0.7,8),new THREE.MeshLambertMaterial({color:0xFFDBB5}));
+    const armL=new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.1,0.7,8),new THREE.MeshLambertMaterial({color:0x8D5524}));
     armL.position.set(-0.6,1.3,0);armL.rotation.z=0.3;armL.userData={type:'arm',side:0};player.add(armL);
     // Shield - round, grey with maroon emblem
     const shield=new THREE.Mesh(new THREE.CylinderGeometry(0.6,0.6,0.08,16),new THREE.MeshLambertMaterial({color:grey}));
@@ -206,7 +206,7 @@ function createPlayer(){
     emblem.position.set(-0.9,1.2,0.19);emblem.rotation.x=Math.PI/2;player.add(emblem);
 
     // RIGHT ARM - holds pencil
-    const armR=new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.1,0.7,8),new THREE.MeshLambertMaterial({color:0xFFDBB5}));
+    const armR=new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.1,0.7,8),new THREE.MeshLambertMaterial({color:0x8D5524}));
     armR.position.set(0.6,1.3,0);armR.rotation.z=-0.3;armR.userData={type:'arm',side:1};player.add(armR);
     // Pencil - yellow body with pink eraser and dark tip
     const pencilGroup=new THREE.Group();
