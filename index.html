@@ -30,8 +30,8 @@ body { overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-
 .instructions { color: rgba(255,255,255,0.65); font-size: clamp(12px, 3vw, 15px); margin-top: 20px; text-align: center; line-height: 1.6; padding: 0 20px; }
 #question-panel { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 20px; padding: 28px 32px; min-width: 300px; max-width: 90vw; width: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.5); display: none; text-align: center; }
 #question-panel h2 { font-size: clamp(26px, 7vw, 38px); color: #333; margin-bottom: 20px; }
-.answer-btn { display: block; width: 100%; padding: 12px; margin: 6px 0; font-size: clamp(18px, 5vw, 24px); font-weight: bold; border: 3px solid #e0e0e0; border-radius: 14px; background: #fafafa; cursor: pointer; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
-.answer-btn:hover { border-color: #667eea; background: #f0f0ff; }
+.answer-btn { display: block; width: 100%; padding: 12px; margin: 6px 0; font-size: clamp(18px, 5vw, 24px); font-weight: bold; border: 3px solid #e0e0e0; border-radius: 14px; background: #fafafa; cursor: pointer; transition: all 0.15s; -webkit-tap-highlight-color: transparent; outline: none; }
+@media(hover:hover){.answer-btn:hover { border-color: #667eea; background: #f0f0ff; }}
 .answer-btn.correct { background: #4CAF50; color: white; border-color: #4CAF50; }
 .answer-btn.wrong { background: #EF5350; color: white; border-color: #EF5350; }
 #skip-panel { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 20px; padding: 20px 24px; max-width: 92vw; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.5); display: none; text-align: center; }
@@ -48,8 +48,8 @@ body { overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-
 #skip-check-area { display: none; margin-top: 10px; }
 #skip-check-area .skip-check-q { font-size: clamp(16px, 4vw, 22px); font-weight: bold; color: #333; margin-bottom: 10px; }
 #skip-check-area .skip-check-btns { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
-#skip-check-area .check-btn { flex: 1 1 45%; max-width: 48%; padding: 10px 8px; font-size: clamp(16px, 4vw, 22px); font-weight: bold; border: 3px solid #e0e0e0; border-radius: 12px; background: #fafafa; cursor: pointer; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
-#skip-check-area .check-btn:hover { border-color: #667eea; background: #f0f0ff; }
+#skip-check-area .check-btn { flex: 1 1 45%; max-width: 48%; padding: 10px 8px; font-size: clamp(16px, 4vw, 22px); font-weight: bold; border: 3px solid #e0e0e0; border-radius: 12px; background: #fafafa; cursor: pointer; transition: all 0.15s; -webkit-tap-highlight-color: transparent; outline: none; }
+@media(hover:hover){#skip-check-area .check-btn:hover { border-color: #667eea; background: #f0f0ff; }}
 #skip-check-area .check-btn.correct { background: #4CAF50; color: white; border-color: #4CAF50; }
 #skip-check-area .check-btn.wrong { background: #EF5350; color: white; border-color: #EF5350; }
 #skip-check-result { font-size: clamp(14px, 3.5vw, 18px); font-weight: bold; margin-top: 8px; min-height: 24px; }
@@ -454,6 +454,8 @@ function showQuestion(rows,cols,product){
     const c=document.getElementById('answer-buttons');c.innerHTML='';
     ans.forEach(a=>{const b=document.createElement('button');b.className='answer-btn';b.textContent=a;b.addEventListener('click',()=>handleAnswer(a,product,rows,cols,b));c.appendChild(b);});
     document.getElementById('question-panel').style.display='block';
+    // Clear any focus so no button looks pre-selected
+    if(document.activeElement)document.activeElement.blur();
 }
 
 function handleAnswer(answer,correct,rows,cols,btn){
@@ -565,6 +567,7 @@ function showSkipCheck(){
         btnsDiv.appendChild(b);
     });
     document.getElementById('skip-check-area').style.display='block';
+    if(document.activeElement)document.activeElement.blur();
 }
 
 function handleSkipCheck(answer,correct){
@@ -660,7 +663,11 @@ function updateHUD(){
     }
 }
 
-function onResize(){camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);}
+function onResize(){
+    // Only allow resize on menu or game-over screens — lock during gameplay
+    if(gameState==='PLAYING'||gameState==='QUESTION'||gameState==='SKIP_COUNT')return;
+    camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);
+}
 function animate(){requestAnimationFrame(animate);const d=Math.min(clock.getDelta(),0.05);update(d);renderer.render(scene,camera);}
 init();
 </script>
