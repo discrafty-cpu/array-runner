@@ -580,8 +580,15 @@ function handleSkipCheck(answer,correct){
             if(parseInt(b.textContent)===correct)b.classList.add('correct');
             if(parseInt(b.textContent)===answer)b.classList.add('wrong');
         });
-        resultEl.textContent='The answer is '+correct+'. Keep going!';
+        resultEl.textContent='Try again! Restarting skip count...';
         resultEl.style.color='#EF5350';playWrongSound();
+        // Reset and restart the entire skip count
+        setTimeout(()=>{
+            document.getElementById('skip-check-area').style.display='none';
+            document.getElementById('skip-panel').style.display='none';
+            startSkipCount(skipState.rows,skipState.cols);
+        },1400);
+        return;
     }
     skipState.checkDone=true;
     setTimeout(()=>{
