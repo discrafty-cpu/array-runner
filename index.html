@@ -2,50 +2,59 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Vinculum - 3D Multiplication Array Runner</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #000; user-select: none; }
+body { overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #000; user-select: none; touch-action: none; }
 #game-canvas { display: block; width: 100vw; height: 100vh; }
 #ui-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
 #ui-overlay > * { pointer-events: auto; }
-#hud { position: absolute; top: 16px; left: 0; right: 0; display: none; justify-content: space-between; padding: 0 24px; }
-.hud-item { background: rgba(0,0,0,0.65); color: white; padding: 8px 20px; border-radius: 24px; font-size: 20px; font-weight: bold; }
+#hud { position: absolute; top: 10px; left: 0; right: 0; display: none; justify-content: space-between; padding: 0 12px; }
+.hud-item { background: rgba(0,0,0,0.65); color: white; padding: 6px 14px; border-radius: 24px; font-size: 16px; font-weight: bold; }
 #timer { color: #FFD700; font-variant-numeric: tabular-nums; }
 #streak-display { color: #FF6B6B; }
 #menu-screen { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-#menu-screen h1 { font-size: 68px; color: white; text-shadow: 3px 3px 8px rgba(0,0,0,0.3); margin-bottom: 6px; letter-spacing: 6px; }
-.subtitle { color: rgba(255,255,255,0.8); font-size: 22px; margin-bottom: 36px; }
-.btn { padding: 16px 56px; font-size: 26px; font-weight: bold; border: none; border-radius: 50px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; margin: 8px; }
+#menu-screen h1 { font-size: clamp(36px, 10vw, 68px); color: white; text-shadow: 3px 3px 8px rgba(0,0,0,0.3); margin-bottom: 6px; letter-spacing: 6px; }
+.subtitle { color: rgba(255,255,255,0.8); font-size: clamp(14px, 4vw, 22px); margin-bottom: 36px; }
+.btn { padding: 14px 48px; font-size: clamp(18px, 5vw, 26px); font-weight: bold; border: none; border-radius: 50px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; margin: 8px; }
 .btn:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
 .btn-primary { background: #FFD700; color: #333; }
-.instructions { color: rgba(255,255,255,0.65); font-size: 15px; margin-top: 24px; text-align: center; line-height: 1.6; }
-#question-panel { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 20px; padding: 36px 44px; min-width: 380px; max-width: 90vw; box-shadow: 0 20px 60px rgba(0,0,0,0.5); display: none; text-align: center; }
-#question-panel h2 { font-size: 38px; color: #333; margin-bottom: 24px; }
-.answer-btn { display: block; width: 100%; padding: 14px; margin: 8px 0; font-size: 24px; font-weight: bold; border: 3px solid #e0e0e0; border-radius: 14px; background: #fafafa; cursor: pointer; transition: all 0.15s; }
+.instructions { color: rgba(255,255,255,0.65); font-size: clamp(12px, 3vw, 15px); margin-top: 24px; text-align: center; line-height: 1.6; padding: 0 20px; }
+#question-panel { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 20px; padding: 28px 32px; min-width: 300px; max-width: 90vw; width: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.5); display: none; text-align: center; }
+#question-panel h2 { font-size: clamp(26px, 7vw, 38px); color: #333; margin-bottom: 20px; }
+.answer-btn { display: block; width: 100%; padding: 12px; margin: 6px 0; font-size: clamp(18px, 5vw, 24px); font-weight: bold; border: 3px solid #e0e0e0; border-radius: 14px; background: #fafafa; cursor: pointer; transition: all 0.15s; }
 .answer-btn:hover { border-color: #667eea; background: #f0f0ff; }
 .answer-btn.correct { background: #4CAF50; color: white; border-color: #4CAF50; }
 .answer-btn.wrong { background: #EF5350; color: white; border-color: #EF5350; }
-#skip-panel { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 20px; padding: 32px 40px; min-width: 420px; max-width: 90vw; box-shadow: 0 20px 60px rgba(0,0,0,0.5); display: none; text-align: center; }
-#skip-panel h2 { font-size: 30px; color: #333; margin-bottom: 8px; }
-.skip-instruction { font-size: 18px; color: #666; margin-bottom: 16px; }
-#skip-grid { display: inline-block; margin: 12px auto; }
-.skip-row { display: flex; justify-content: center; margin: 2px 0; }
-.skip-cell { width: 36px; height: 36px; margin: 2px; border-radius: 6px; background: #e8e8e8; transition: background 0.3s, transform 0.2s; }
+#skip-panel { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 20px; padding: 20px 24px; max-width: 92vw; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.5); display: none; text-align: center; }
+#skip-panel h2 { font-size: clamp(22px, 6vw, 30px); color: #333; margin-bottom: 4px; }
+.skip-instruction { font-size: clamp(13px, 3.5vw, 18px); color: #666; margin-bottom: 10px; }
+#skip-grid { display: inline-block; margin: 8px auto; max-height: 35vh; overflow: hidden; }
+.skip-row { display: flex; justify-content: center; margin: 1px 0; }
+.skip-cell { border-radius: 4px; background: #e8e8e8; transition: background 0.3s, transform 0.2s; }
 .skip-cell.filled { background: #667eea; transform: scale(1.05); }
-#skip-count-display { font-size: 52px; font-weight: bold; color: #667eea; margin: 16px 0; transition: color 0.3s; }
-#skip-row-label { font-size: 20px; color: #888; margin-bottom: 12px; min-height: 28px; }
-#skip-click-btn { padding: 14px 44px; font-size: 22px; background: #667eea; color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+#skip-count-display { font-size: clamp(32px, 9vw, 52px); font-weight: bold; color: #667eea; margin: 10px 0; transition: color 0.3s; }
+#skip-row-label { font-size: clamp(14px, 3.5vw, 20px); color: #888; margin-bottom: 8px; min-height: 24px; }
+#skip-click-btn { padding: 12px 36px; font-size: clamp(16px, 4.5vw, 22px); background: #667eea; color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
 #skip-click-btn:hover { background: #5568d6; }
+/* Skip-count checkpoint check */
+#skip-check-area { display: none; margin-top: 10px; }
+#skip-check-area .skip-check-q { font-size: clamp(16px, 4vw, 22px); font-weight: bold; color: #333; margin-bottom: 10px; }
+#skip-check-area .skip-check-btns { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+#skip-check-area .check-btn { flex: 1 1 45%; max-width: 48%; padding: 10px 8px; font-size: clamp(16px, 4vw, 22px); font-weight: bold; border: 3px solid #e0e0e0; border-radius: 12px; background: #fafafa; cursor: pointer; transition: all 0.15s; }
+#skip-check-area .check-btn:hover { border-color: #667eea; background: #f0f0ff; }
+#skip-check-area .check-btn.correct { background: #4CAF50; color: white; border-color: #4CAF50; }
+#skip-check-area .check-btn.wrong { background: #EF5350; color: white; border-color: #EF5350; }
+#skip-check-result { font-size: clamp(14px, 3.5vw, 18px); font-weight: bold; margin-top: 8px; min-height: 24px; }
 #gameover-screen { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: none; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.85); }
-#gameover-screen h1 { font-size: 52px; color: #FFD700; margin-bottom: 16px; }
-.final-score { font-size: 34px; color: white; margin-bottom: 8px; }
-.stats { color: rgba(255,255,255,0.65); font-size: 18px; margin-bottom: 28px; line-height: 1.6; }
+#gameover-screen h1 { font-size: clamp(32px, 9vw, 52px); color: #FFD700; margin-bottom: 16px; }
+.final-score { font-size: clamp(22px, 6vw, 34px); color: white; margin-bottom: 8px; }
+.stats { color: rgba(255,255,255,0.65); font-size: clamp(14px, 3.5vw, 18px); margin-bottom: 28px; line-height: 1.6; }
 #touch-controls { position: absolute; bottom: 30px; left: 0; right: 0; display: none; justify-content: center; gap: 80px; }
-.touch-btn { width: 70px; height: 70px; border-radius: 50%; background: rgba(255,255,255,0.25); border: 3px solid rgba(255,255,255,0.4); color: white; font-size: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.touch-btn { width: 70px; height: 70px; border-radius: 50%; background: rgba(255,255,255,0.25); border: 3px solid rgba(255,255,255,0.4); color: white; font-size: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .touch-btn:active { background: rgba(255,255,255,0.5); }
-#feedback-flash { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 48px; font-weight: bold; pointer-events: none; opacity: 0; transition: opacity 0.3s; }
+#feedback-flash { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: clamp(32px, 8vw, 48px); font-weight: bold; pointer-events: none; opacity: 0; transition: opacity 0.3s; }
 </style>
 </head>
 <body>
@@ -73,6 +82,11 @@ body { overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-
         <div id="skip-row-label"></div>
         <div id="skip-count-display">0</div>
         <button id="skip-click-btn">+ 5</button>
+        <div id="skip-check-area">
+            <div class="skip-check-q" id="skip-check-q"></div>
+            <div class="skip-check-btns" id="skip-check-btns"></div>
+            <div id="skip-check-result"></div>
+        </div>
     </div>
     <div id="gameover-screen">
         <h1>TIME'S UP!</h1>
@@ -210,28 +224,22 @@ function createPlayer(){
     armR.position.set(0.6,1.3,0);armR.rotation.z=-0.3;armR.userData={type:'arm',side:1};player.add(armR);
     // Pencil - yellow body with pink eraser and dark tip
     const pencilGroup=new THREE.Group();
-    // Yellow shaft
     const shaft=new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,1.2,6),new THREE.MeshLambertMaterial({color:0xFFD700}));
     pencilGroup.add(shaft);
-    // Metal band (silver ferrule)
     const ferrule=new THREE.Mesh(new THREE.CylinderGeometry(0.065,0.065,0.1,6),new THREE.MeshLambertMaterial({color:0xCCCCCC}));
     ferrule.position.y=0.55;pencilGroup.add(ferrule);
-    // Pink eraser
     const eraser=new THREE.Mesh(new THREE.CylinderGeometry(0.055,0.055,0.12,6),new THREE.MeshLambertMaterial({color:0xFF9999}));
     eraser.position.y=0.66;pencilGroup.add(eraser);
-    // Sharpened tip - cone
     const tip=new THREE.Mesh(new THREE.ConeGeometry(0.06,0.2,6),new THREE.MeshLambertMaterial({color:0xFFD700}));
     tip.position.y=-0.7;pencilGroup.add(tip);
-    // Graphite point
     const graphite=new THREE.Mesh(new THREE.ConeGeometry(0.025,0.1,6),new THREE.MeshLambertMaterial({color:0x333333}));
     graphite.position.y=-0.82;pencilGroup.add(graphite);
-    // Position pencil in right hand, angled forward like a spear
     pencilGroup.position.set(0.75,1.5,0.3);
     pencilGroup.rotation.x=-0.4;
     pencilGroup.rotation.z=-0.15;
     player.add(pencilGroup);
 
-    // Legs - maroon greaves/sandals
+    // Legs
     const legG=new THREE.CylinderGeometry(0.14,0.12,0.8,8),legM=new THREE.MeshLambertMaterial({color:darkGrey});
     [-0.2,0.2].forEach((x,i)=>{const l=new THREE.Mesh(legG,legM);l.position.set(x,0.4,0);l.userData={type:'leg',side:i};player.add(l);});
     // Shin guards
@@ -293,6 +301,22 @@ function startGame(){
     gameState='PLAYING';score=0;streak=0;bestStreak=0;correctCount=0;wrongCount=0;
     timeRemaining=GAME_DURATION;playerZ=0;playerLane=1;targetX=LANES[1];nextSpawnZ=30;
     obstacles.forEach(o=>scene.remove(o));obstacles=[];
+
+    // FIX: Reset player position so character doesn't stay in space
+    player.position.set(0,0,0);
+    // FIX: Reset ground tiles and scenery back near origin
+    groundTiles.forEach(t=>{
+        while(t.position.z>150)t.position.z-=600;
+        while(t.position.z<-150)t.position.z+=600;
+    });
+    sceneryItems.forEach(t=>{
+        while(t.position.z>220)t.position.z-=240;
+        while(t.position.z<-60)t.position.z+=240;
+    });
+    // Reset camera
+    camera.position.set(0,5.5,-9);
+    camera.lookAt(0,2.5,18);
+
     for(let z=30;z<SPAWN_DISTANCE;z+=MIN_ARRAY_GAP+Math.random()*(MAX_ARRAY_GAP-MIN_ARRAY_GAP)){spawnArrayObstacle(z);nextSpawnZ=z+MIN_ARRAY_GAP+Math.random()*(MAX_ARRAY_GAP-MIN_ARRAY_GAP);}
     document.getElementById('menu-screen').style.display='none';
     document.getElementById('gameover-screen').style.display='none';
@@ -308,7 +332,9 @@ function update(delta){
         playerZ+=PLAYER_SPEED*delta;
         player.position.x+=(targetX-player.position.x)*10*delta;
         player.position.z=playerZ;
-        const rc=playerZ*3;player.position.y=Math.abs(Math.sin(rc))*0.25;
+        // FIX: Clamp Y to ground-level bounce only
+        const rc=playerZ*3;
+        player.position.y=Math.abs(Math.sin(rc))*0.25;
         player.children.forEach(ch=>{
             if(ch.userData&&ch.userData.type==='arm')ch.rotation.x=Math.sin(rc+ch.userData.side*Math.PI)*0.5;
             else if(ch.userData&&ch.userData.type==='leg')ch.rotation.x=Math.sin(rc+ch.userData.side*Math.PI)*0.6;
@@ -337,6 +363,10 @@ function update(delta){
         const t=clock.getElapsedTime();camera.position.x=player.position.x*0.3+Math.sin(t*0.4)*0.4;camera.position.y=5.5+Math.sin(t*0.3)*0.2;
         obstacles.forEach(a=>{a.userData.time+=delta;a.position.y=a.userData.baseY+Math.sin(a.userData.time*1.8)*0.35;});
     }
+    // FIX: On game over, keep character grounded and still
+    if(gameState==='GAME_OVER'){
+        player.position.y=0;
+    }
 }
 
 function showQuestion(rows,cols,product){
@@ -364,16 +394,36 @@ function handleAnswer(answer,correct,rows,cols,btn){
 }
 
 function startSkipCount(rows,cols){
-    gameState='SKIP_COUNT';skipState={rows,cols,currentRow:0,total:0};
+    gameState='SKIP_COUNT';
+    // Pick a checkpoint row for remediation check (only if 4+ rows)
+    const checkRow=(rows>=4)?Math.floor(rows/2):-1;
+    skipState={rows,cols,currentRow:0,total:0,checkRow,checkDone:false};
+
     document.getElementById('skip-title').textContent=rows+' \u00D7 '+cols;
     document.getElementById('skip-instruction').textContent='Skip count by '+cols+'! Tap the button to build each row.';
     document.getElementById('skip-count-display').textContent='0';
     document.getElementById('skip-count-display').style.color='#667eea';
     document.getElementById('skip-row-label').textContent='';
+    document.getElementById('skip-check-area').style.display='none';
+    document.getElementById('skip-check-result').textContent='';
+
+    // Dynamic cell sizing to fit screen
     const grid=document.getElementById('skip-grid');grid.innerHTML='';
+    const maxGridW=Math.min(360,window.innerWidth-80);
+    const maxGridH=Math.min(200,window.innerHeight*0.25);
     const mC=Math.min(cols,12),mR=Math.min(rows,12);
-    for(let r=0;r<mR;r++){const rd=document.createElement('div');rd.className='skip-row';rd.id='skip-row-'+r;
-    for(let c=0;c<mC;c++){const cl=document.createElement('div');cl.className='skip-cell';if(mC>8){cl.style.width='28px';cl.style.height='28px';}rd.appendChild(cl);}grid.appendChild(rd);}
+    const cellSize=Math.max(12,Math.min(36,Math.floor(maxGridW/mC)-4,Math.floor(maxGridH/mR)-4));
+    const cellGap=Math.max(1,Math.min(2,Math.floor(cellSize/12)));
+
+    for(let r=0;r<mR;r++){
+        const rd=document.createElement('div');rd.className='skip-row';rd.id='skip-row-'+r;rd.style.margin=cellGap+'px 0';
+        for(let c=0;c<mC;c++){
+            const cl=document.createElement('div');cl.className='skip-cell';
+            cl.style.width=cellSize+'px';cl.style.height=cellSize+'px';cl.style.margin=cellGap+'px';
+            rd.appendChild(cl);
+        }
+        grid.appendChild(rd);
+    }
     document.getElementById('skip-click-btn').textContent='+ '+cols;
     document.getElementById('skip-click-btn').style.display='inline-block';
     document.getElementById('skip-panel').style.display='block';
@@ -381,7 +431,20 @@ function startSkipCount(rows,cols){
 
 function skipCountClick(){
     if(!skipState||gameState!=='SKIP_COUNT')return;
-    const{rows,cols,currentRow}=skipState;if(currentRow>=rows)return;
+    const{rows,cols,currentRow,checkRow,checkDone}=skipState;
+    if(currentRow>=rows)return;
+
+    // CHECKPOINT: At the check row, show a mini MC question
+    if(currentRow===checkRow&&!checkDone){
+        showSkipCheck();
+        return;
+    }
+
+    fillSkipRow();
+}
+
+function fillSkipRow(){
+    const{rows,cols,currentRow}=skipState;
     const mR=Math.min(rows,12),vR=mR-1-currentRow;
     if(vR>=0&&vR<mR){const rd=document.getElementById('skip-row-'+vR);if(rd)rd.querySelectorAll('.skip-cell').forEach((c,i)=>setTimeout(()=>c.classList.add('filled'),i*30));}
     skipState.currentRow++;skipState.total+=cols;
@@ -396,10 +459,65 @@ function skipCountClick(){
     }
 }
 
+function showSkipCheck(){
+    // Hide the skip button, show MC check
+    document.getElementById('skip-click-btn').style.display='none';
+    const{rows,cols,currentRow}=skipState;
+    const nextTotal=(currentRow+1)*cols;
+    document.getElementById('skip-check-q').textContent='What comes next? '+cols+' \u00D7 '+(currentRow+1)+' = ?';
+
+    // Build wrong answers
+    const wrongs=new Set();
+    const strats=[()=>nextTotal+cols,()=>nextTotal-cols,()=>nextTotal+Math.floor(Math.random()*5)+1,()=>nextTotal-Math.floor(Math.random()*5)-1];
+    let att=0;while(wrongs.size<3&&att<40){const v=strats[Math.floor(Math.random()*strats.length)]();if(v>0&&v!==nextTotal&&!wrongs.has(v))wrongs.add(v);att++;}
+    while(wrongs.size<3){const v=nextTotal+wrongs.size+1;if(v!==nextTotal)wrongs.add(v);}
+
+    const opts=[nextTotal,...wrongs];
+    for(let i=opts.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[opts[i],opts[j]]=[opts[j],opts[i]];}
+
+    const btnsDiv=document.getElementById('skip-check-btns');btnsDiv.innerHTML='';
+    document.getElementById('skip-check-result').textContent='';
+    opts.forEach(v=>{
+        const b=document.createElement('button');b.className='check-btn';b.textContent=v;
+        b.addEventListener('click',()=>handleSkipCheck(v,nextTotal));
+        btnsDiv.appendChild(b);
+    });
+    document.getElementById('skip-check-area').style.display='block';
+}
+
+function handleSkipCheck(answer,correct){
+    document.querySelectorAll('.check-btn').forEach(b=>{b.style.pointerEvents='none';});
+    const resultEl=document.getElementById('skip-check-result');
+    if(answer===correct){
+        document.querySelectorAll('.check-btn').forEach(b=>{if(parseInt(b.textContent)===correct)b.classList.add('correct');});
+        resultEl.textContent='Correct! Keep skip counting!';
+        resultEl.style.color='#4CAF50';
+        score+=3; // Small bonus for passing the check
+    }else{
+        document.querySelectorAll('.check-btn').forEach(b=>{
+            if(parseInt(b.textContent)===correct)b.classList.add('correct');
+            if(parseInt(b.textContent)===answer)b.classList.add('wrong');
+        });
+        resultEl.textContent='The answer is '+correct+'. Keep going!';
+        resultEl.style.color='#EF5350';
+    }
+    skipState.checkDone=true;
+    // After a pause, hide the check and continue skip counting
+    setTimeout(()=>{
+        document.getElementById('skip-check-area').style.display='none';
+        document.getElementById('skip-click-btn').style.display='inline-block';
+        // Auto-fill this row since they just answered
+        fillSkipRow();
+    },1200);
+}
+
 function removeCurrentArray(){if(currentArrayObj){const i=obstacles.indexOf(currentArrayObj);if(i>-1){scene.remove(currentArrayObj);obstacles.splice(i,1);}currentArrayObj=null;}}
 function showFeedback(t,c){const e=document.getElementById('feedback-flash');e.textContent=t;e.style.color=c;e.style.opacity='1';setTimeout(()=>{e.style.opacity='0';},1200);}
 function endGame(){
-    gameState='GAME_OVER';document.getElementById('hud').style.display='none';document.getElementById('question-panel').style.display='none';document.getElementById('skip-panel').style.display='none';
+    gameState='GAME_OVER';
+    // FIX: Ground the player immediately
+    player.position.y=0;
+    document.getElementById('hud').style.display='none';document.getElementById('question-panel').style.display='none';document.getElementById('skip-panel').style.display='none';
     if(isMobile)document.getElementById('touch-controls').style.display='none';
     const tot=correctCount+wrongCount,acc=tot>0?Math.round(correctCount/tot*100):0;
     document.getElementById('final-score').textContent='Final Score: '+score;
