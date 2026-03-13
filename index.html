@@ -352,7 +352,8 @@ function createArrayTexture(rows,cols){
 
 function spawnArrayObstacle(z){
     const a=Math.floor(Math.random()*11)+2,b=Math.floor(Math.random()*11)+2;
-    const rows=Math.min(a,b),cols=Math.max(a,b);
+    // Randomly pick orientation so students see both 3 rows of 7 AND 7 rows of 3
+    const rows=Math.random()>0.5?a:b,cols=rows===a?b:a;
     const tex=new THREE.CanvasTexture(createArrayTexture(rows,cols));
     const pH=5.5,pW=pH;
     const geo=new THREE.BoxGeometry(pW,pH,0.12);
