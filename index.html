@@ -478,7 +478,8 @@ function handleAnswer(answer,correct,rows,cols,btn){
 function startSkipCount(rows,cols){
     gameState='SKIP_COUNT';
     const checkRow=(rows>=4)?Math.floor(rows/2):-1;
-    skipState={rows,cols,currentRow:0,total:0,checkRow,checkDone:false};
+    // Fresh state — locked:false ensures button is immediately clickable
+    skipState={rows,cols,currentRow:0,total:0,checkRow,checkDone:false,locked:false};
 
     document.getElementById('skip-title').textContent=rows+' \u00D7 '+cols;
     document.getElementById('skip-instruction').textContent='Skip count by '+cols+'! Tap the button to build each row.';
@@ -487,6 +488,9 @@ function startSkipCount(rows,cols){
     document.getElementById('skip-row-label').textContent='';
     document.getElementById('skip-check-area').style.display='none';
     document.getElementById('skip-check-result').textContent='';
+    // Reset button appearance from any previous pacing lock
+    const skipBtn=document.getElementById('skip-click-btn');
+    skipBtn.style.opacity='1';
 
     // Dynamic cell sizing
     const grid=document.getElementById('skip-grid');grid.innerHTML='';
@@ -514,6 +518,8 @@ function skipCountClick(){
     if(!skipState||gameState!=='SKIP_COUNT')return;
     const{rows,cols,currentRow,checkRow,checkDone}=skipState;
     if(currentRow>=rows)return;
+    // Ignore clicks while pacing lock is active
+    if(skipState.locked)return;
 
     // Checkpoint: at midpoint, quiz them
     if(currentRow===checkRow&&!checkDone){
@@ -534,6 +540,19 @@ function fillSkipRow(){
     // Audio: beat + speak the running total
     playBeat();
     setTimeout(()=>speakNumber(skipState.total),150);
+
+    // Lock the button so students must wait and listen before clicking again
+    // Pace scales with number size: bigger numbers take longer to say
+    const numDigits=String(skipState.total).length;
+    const paceDelay=800+numDigits*250; // ~1.05s for single digit, ~1.3s for two, ~1.55s for three
+    skipState.locked=true;
+    const btn=document.getElementById('skip-click-btn');
+    btn.style.opacity='0.4';
+    if(skipState.currentRow<rows){
+        setTimeout(()=>{
+            if(skipState){skipState.locked=false;btn.style.opacity='1';}
+        },paceDelay);
+    }
 
     if(skipState.currentRow>=rows){
         document.getElementById('skip-click-btn').style.display='none';
