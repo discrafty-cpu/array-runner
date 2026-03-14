@@ -64,7 +64,7 @@ body { overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-
 #touch-controls { position: absolute; bottom: 30px; left: 0; right: 0; display: none; justify-content: center; gap: 80px; }
 .touch-btn { width: 70px; height: 70px; border-radius: 50%; background: rgba(255,255,255,0.25); border: 3px solid rgba(255,255,255,0.4); color: white; font-size: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .touch-btn:active { background: rgba(255,255,255,0.5); }
-#feedback-flash { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: clamp(32px, 8vw, 48px); font-weight: bold; pointer-events: none; opacity: 0; transition: opacity 0.3s; }
+#feedback-flash { position: absolute; top: -60px; left: 50%; transform: translateX(-50%); font-size: clamp(20px, 5vw, 28px); font-weight: bold; pointer-events: none; padding: 10px 32px; border-radius: 0 0 16px 16px; color: white; text-align: center; transition: top 0.35s ease-out, opacity 0.3s; opacity: 0; z-index: 100; white-space: nowrap; letter-spacing: 1px; text-shadow: 0 1px 3px rgba(0,0,0,0.3); }
 </style>
 </head>
 <body>
@@ -644,7 +644,15 @@ function getMissedFactsSummary(){
 
 /* ===== UTILITIES ===== */
 function removeCurrentArray(){if(currentArrayObj){const i=obstacles.indexOf(currentArrayObj);if(i>-1){scene.remove(currentArrayObj);obstacles.splice(i,1);}currentArrayObj=null;}}
-function showFeedback(t,c){const e=document.getElementById('feedback-flash');e.textContent=t;e.style.color=c;e.style.opacity='1';setTimeout(()=>{e.style.opacity='0';},1200);}
+function showFeedback(t,c){
+    const e=document.getElementById('feedback-flash');
+    e.textContent=t;
+    // High-contrast banner colors: dark green or dark red backgrounds with white text
+    e.style.background=c==='#4CAF50'?'rgba(27,94,32,0.92)':'rgba(183,28,28,0.92)';
+    e.style.opacity='1';
+    e.style.top='40px';
+    setTimeout(()=>{e.style.top='-60px';e.style.opacity='0';},1400);
+}
 
 function endGame(){
     gameState='GAME_OVER';
